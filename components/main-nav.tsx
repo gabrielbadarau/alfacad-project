@@ -2,8 +2,11 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import Image from 'next/image';
 
 import { cn } from '@/lib/utils';
+
+import logo from '../public/logo.png';
 
 interface MainNavProps extends React.HTMLAttributes<HTMLElement> {
   className: string;
@@ -19,9 +22,9 @@ const MainNav: React.FC<MainNavProps> = ({
 
   let routes = [
     {
-      href: `/overview`,
-      label: 'Overview',
-      active: pathname === `/overview`,
+      href: `/projects`,
+      label: 'Proiecte',
+      active: pathname === `/projects`,
     },
     {
       href: `/team`,
@@ -39,6 +42,10 @@ const MainNav: React.FC<MainNavProps> = ({
       className={cn('flex items-center space-x-4 lg:space-x-6', className)}
       {...props}
     >
+      <Link href='/overview'>
+        <Image src={logo} alt='Logo' priority width={80} height={54} />
+      </Link>
+
       {routes.map((route) => (
         <Link
           key={route.href}
