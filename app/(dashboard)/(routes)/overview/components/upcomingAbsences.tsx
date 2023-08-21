@@ -47,7 +47,7 @@ const UpcomingAbsences = () => {
   }
 
   return (
-    <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4'>
+    <div className='grid gap-4 lg:grid-cols-2 2xl:grid-cols-3'>
       {mockData.map((data) => {
         const days = differenceInDays(data.endDate, data.startDate) + 1;
         const unit = days > 1 ? 'zile' : 'zi';

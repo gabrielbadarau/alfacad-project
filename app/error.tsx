@@ -11,7 +11,7 @@ interface ErrorProps {
 const Error: React.FC<ErrorProps> = ({ error }) => (
   <div className='flex justify-center p-5'>
     <Alert variant='destructive'>
-      <AlertCircle className='h-4 w-4' />
+      <AlertCircle className='h-4 w-4 shrink-0' />
       <AlertTitle>Eroare!</AlertTitle>
       <AlertDescription>{error.message}</AlertDescription>
       <AlertDescription>

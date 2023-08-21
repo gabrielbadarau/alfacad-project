@@ -5,7 +5,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 const NotFound = () => (
   <div className='flex justify-center p-5'>
     <Alert>
-      <MonitorOff className='h-4 w-4' />
+      <MonitorOff className='h-4 w-4 shrink-0' />
       <AlertTitle>Pagina nu a fost găsită!</AlertTitle>
       <AlertDescription>
         Asigurați-vă că adresa URL este corectă sau încercați să navigați către
