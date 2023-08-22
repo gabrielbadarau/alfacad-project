@@ -17,7 +17,7 @@ export default async function SetupLayout({
   return (
     <>
       <Navbar />
-      <div>{children}</div>
+      <div className='h-[calc(100%-65px)]'>{children}</div>
     </>
   );
 }
