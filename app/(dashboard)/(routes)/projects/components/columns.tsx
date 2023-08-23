@@ -1,6 +1,9 @@
 'use client';
 
+import { FolderPlus } from 'lucide-react';
+
 import { ColumnDef } from '@tanstack/react-table';
+import { Button } from '@/components/ui/button';
 
 import { statuses } from './utils';
 import { DataTableRowActions } from './data-table-row-actions';
@@ -37,9 +40,7 @@ export const columns: ColumnDef<Task>[] = [
 
       return (
         <div className='flex items-center'>
-          {status.icon && (
-            <status.icon className='mr-2 h-4 w-4' />
-          )}
+          {status.icon && <status.icon className='mr-2 h-4 w-4' />}
           <span>{status.label}</span>
         </div>
       );
@@ -49,7 +50,18 @@ export const columns: ColumnDef<Task>[] = [
     },
   },
   {
+    header: () => (
+      <div className='text-right'>
+        <Button variant='outline' className='h-8 p-2 lg:p-3 '>
+          <FolderPlus className='h-4 w-4 shrink-0' />
+        </Button>
+      </div>
+    ),
     id: 'actions',
-    cell: ({ row }) => <DataTableRowActions row={row} />,
+    cell: ({ row }) => (
+      <div className='flex justify-end'>
+        <DataTableRowActions row={row} />
+      </div>
+    ),
   },
 ];

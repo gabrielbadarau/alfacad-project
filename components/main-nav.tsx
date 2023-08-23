@@ -22,14 +22,14 @@ const MainNav: React.FC<MainNavProps> = ({
 
   let routes = [
     {
+      href: `/overview`,
+      label: 'Dashboard',
+      active: pathname === `/overview`,
+    },
+    {
       href: `/projects`,
       label: 'Proiecte',
       active: pathname === `/projects`,
-    },
-    {
-      href: `/team`,
-      label: 'Team',
-      active: pathname === `/team`,
     },
   ];
 
@@ -42,9 +42,7 @@ const MainNav: React.FC<MainNavProps> = ({
       className={cn('flex items-center space-x-4 lg:space-x-6', className)}
       {...props}
     >
-      <Link href='/overview'>
-        <Image src={logo} alt='Logo' priority width={80} height={54} />
-      </Link>
+      <Image src={logo} alt='Logo' priority width={80} height={54} />
 
       {routes.map((route) => (
         <Link
@@ -53,7 +51,7 @@ const MainNav: React.FC<MainNavProps> = ({
           className={cn(
             'text-sm font-medium transition-colors hover:text-primary',
             route.active
-              ? 'text-slate-900 dark:text-white'
+              ? 'text-slate-900 dark:text-white tracking-wide'
               : 'text-muted-foreground'
           )}
         >
