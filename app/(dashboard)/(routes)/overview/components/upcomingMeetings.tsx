@@ -42,7 +42,7 @@ const UpcomingMeetings = () => {
           <Card key={`${data.title}-${data.time}`}>
             <CardHeader className='flex flex-row items-center justify-between py-4'>
               <CardTitle>{data.title}</CardTitle>
-              <ExternalLink className='shrink-0' />
+              <ExternalLink className='shrink-0 cursor-pointer' />
             </CardHeader>
 
             <Separator />
