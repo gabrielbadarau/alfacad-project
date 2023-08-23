@@ -1,9 +1,11 @@
 import { format } from 'date-fns';
 import { ro } from 'date-fns/locale';
-import { ExternalLink, Calendar, MapPin, Clock } from 'lucide-react';
+import { ExternalLink, Calendar, MapPin, Clock, BellPlus } from 'lucide-react';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
+import { Heading } from '@/components/heading';
+import CreateMeetingModal from './createMeetingModal';
 
 const mockData = [
   {
@@ -34,37 +36,41 @@ const mockData = [
 
 const UpcomingMeetings = () => {
   return (
-    <div className='grid gap-4 md:grid-cols-2 xl:grid-cols-4'>
-      {mockData.map((data) => {
-        const formatDate = format(data.date, 'd MMMM', { locale: ro });
+    <>
+      <CreateMeetingModal />
+      <Heading title='Următoarele întâlniri' icon={BellPlus} />
+      <div className='grid gap-4 md:grid-cols-2 xl:grid-cols-4'>
+        {mockData.map((data) => {
+          const formatDate = format(data.date, 'd MMMM', { locale: ro });
 
-        return (
-          <Card key={`${data.title}-${data.time}`}>
-            <CardHeader className='flex flex-row items-center justify-between py-4'>
-              <CardTitle>{data.title}</CardTitle>
-              <ExternalLink className='shrink-0 cursor-pointer' />
-            </CardHeader>
+          return (
+            <Card key={`${data.title}-${data.time}`}>
+              <CardHeader className='flex flex-row items-center justify-between py-4'>
+                <CardTitle>{data.title}</CardTitle>
+                <ExternalLink className='shrink-0 cursor-pointer' />
+              </CardHeader>
 
-            <Separator />
+              <Separator />
 
-            <CardContent className='py-4 flex flex-col gap-2'>
-              <div className='flex flex-row gap-2'>
-                <Calendar className='shrink-0' />
-                <p className='tracking-tighter'>{formatDate}</p>
-              </div>
-              <div className='flex flex-row gap-2'>
-                <Clock className='shrink-0' />
-                <p className='tracking-tighter'>{data.time}</p>
-              </div>
-              <div className='flex flex-row gap-2'>
-                <MapPin className='shrink-0' />
-                <p className='tracking-tighter'>{data.address}</p>
-              </div>
-            </CardContent>
-          </Card>
-        );
-      })}
-    </div>
+              <CardContent className='py-4 flex flex-col gap-2'>
+                <div className='flex flex-row gap-2'>
+                  <Calendar className='shrink-0' />
+                  <p className='tracking-tighter'>{formatDate}</p>
+                </div>
+                <div className='flex flex-row gap-2'>
+                  <Clock className='shrink-0' />
+                  <p className='tracking-tighter'>{data.time}</p>
+                </div>
+                <div className='flex flex-row gap-2'>
+                  <MapPin className='shrink-0' />
+                  <p className='tracking-tighter'>{data.address}</p>
+                </div>
+              </CardContent>
+            </Card>
+          );
+        })}
+      </div>
+    </>
   );
 };
 

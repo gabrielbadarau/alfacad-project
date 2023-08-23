@@ -1,6 +1,14 @@
 import { format, differenceInDays } from 'date-fns';
+import { CalendarPlus } from 'lucide-react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+} from '@/components/ui/card';
+import { Heading } from '@/components/heading';
 
 const mockData = [
   {
@@ -47,49 +55,63 @@ const UpcomingAbsences = () => {
   }
 
   return (
-    <div className='grid gap-4 lg:grid-cols-2 2xl:grid-cols-3'>
-      {mockData.map((data) => {
-        const days = differenceInDays(data.endDate, data.startDate) + 1;
-        const unit = days > 1 ? 'zile' : 'zi';
-        const datesFormat =
-          days > 1
-            ? `${format(data.startDate, 'MMM d')} - ${format(
-                data.endDate,
-                'MMM d'
-              )}`
-            : `${format(data.startDate, 'MMM d')}`;
+    <div className='grid'>
+      <Card>
+        <CardHeader>
+          <Heading title='Concedii' icon={CalendarPlus} />
+          <CardDescription>Următoarele perioade de concediu</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className='grid gap-4 lg:grid-cols-2 2xl:grid-cols-3'>
+            {mockData.map((data) => {
+              const days = differenceInDays(data.endDate, data.startDate) + 1;
+              const unit = days > 1 ? 'zile' : 'zi';
+              const datesFormat =
+                days > 1
+                  ? `${format(data.startDate, 'MMM d')} - ${format(
+                      data.endDate,
+                      'MMM d'
+                    )}`
+                  : `${format(data.startDate, 'MMM d')}`;
 
-        return (
-          <div
-            key={`${data.lastName}-${data.startDate}`}
-            className='flex flex-wrap justify-between gap-4 border-2 rounded-lg p-4 border-slate-100'
-          >
-            <div className='flex flex-row flex-nowrap'>
-              <Avatar className='h-9 w-9'>
-                <AvatarImage src={data.imageUrl} alt='Avatar' />
-                <AvatarFallback className='bg-slate-800 text-white'>
-                  {data.firstName.charAt(0)}
-                  {data.lastName.charAt(0)}
-                </AvatarFallback>
-              </Avatar>
+              return (
+                <div
+                  key={`${data.lastName}-${data.startDate}`}
+                  className='flex flex-wrap justify-between gap-4 border-2 rounded-lg p-4 border-slate-100'
+                >
+                  <div className='flex flex-row flex-nowrap'>
+                    <Avatar className='h-9 w-9'>
+                      <AvatarImage src={data.imageUrl} alt='Avatar' />
+                      <AvatarFallback className='bg-slate-800 text-white'>
+                        {data.firstName.charAt(0)}
+                        {data.lastName.charAt(0)}
+                      </AvatarFallback>
+                    </Avatar>
 
-              <div className='ml-4 space-y-1'>
-                <p className='text-sm font-medium leading-none'>
-                  {data.firstName} {data.lastName}
-                </p>
-                <p className='text-sm text-muted-foreground'>{data.email}</p>
-              </div>
-            </div>
+                    <div className='ml-4 space-y-1'>
+                      <p className='text-sm font-medium leading-none'>
+                        {data.firstName} {data.lastName}
+                      </p>
+                      <p className='text-sm text-muted-foreground'>
+                        {data.email}
+                      </p>
+                    </div>
+                  </div>
 
-            <div className='flex flex-col flex-nowrap gap-1'>
-              <p className='text-sm font-medium leading-none'>{datesFormat}</p>
-              <p className='text-sm text-muted-foreground'>
-                {days} {unit}
-              </p>
-            </div>
+                  <div className='flex flex-col flex-nowrap gap-1'>
+                    <p className='text-sm font-medium leading-none'>
+                      {datesFormat}
+                    </p>
+                    <p className='text-sm text-muted-foreground'>
+                      {days} {unit}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
           </div>
-        );
-      })}
+        </CardContent>
+      </Card>
     </div>
   );
 };
