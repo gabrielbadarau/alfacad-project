@@ -15,7 +15,7 @@ export const Heading: React.FC<HeadingProps> = ({ title, icon: Icon }) => {
       </h2>
       {Icon && (
         <Button className='h-8 w-12' size='icon' variant='secondary'>
-          <Icon className='h-5 w-5 shrink-0'/>
+          <Icon className='h-5 w-5 shrink-0' />
         </Button>
       )}
     </div>

@@ -4,7 +4,6 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
@@ -14,8 +13,7 @@ interface ModalProps {
   description: string;
   isOpen: boolean;
   onClose: () => void;
-  children?: React.ReactNode;
-  footer?: React.ReactNode;
+  children: React.ReactNode;
 }
 
 export const Modal: React.FC<ModalProps> = ({
@@ -24,7 +22,6 @@ export const Modal: React.FC<ModalProps> = ({
   isOpen,
   onClose,
   children,
-  footer,
 }) => {
   const onChange = (open: boolean) => {
     if (!open) {
@@ -40,7 +37,6 @@ export const Modal: React.FC<ModalProps> = ({
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
         <div>{children}</div>
-        <DialogFooter>{footer}</DialogFooter>
       </DialogContent>
     </Dialog>
   );

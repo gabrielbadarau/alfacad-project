@@ -1,11 +1,14 @@
-import UpcomingAbsences from './components/upcomingAbsences';
-import UpcomingMeetings from './components/upcomingMeetings';
+import Client from '@/components/client';
+import UpcomingAbsences from './components/upcoming-absences';
+import UpcomingMeetings from './components/upcoming-meetings';
 
 const OverviewPage = () => {
   return (
     <div className='flex-1 space-y-4 p-8 pt-6'>
-      <UpcomingMeetings />
-      <UpcomingAbsences />
+      <Client>
+        <UpcomingMeetings />
+        <UpcomingAbsences />
+      </Client>
     </div>
   );
 };
