@@ -1,4 +1,7 @@
+'use client';
+
 import { CalendarPlus } from 'lucide-react';
+import { useState } from 'react';
 
 import {
   Card,
@@ -9,6 +12,7 @@ import {
 import { Heading } from '@/components/heading';
 
 import CardAbsence from './card-absence';
+import CreateAbsenceModal from './create-absence-modal';
 
 const mockData = [
   {
@@ -46,6 +50,8 @@ const mockData = [
 ];
 
 const UpcomingAbsences = () => {
+  const [isOpenCreateModal, setIsOpenCreateModal] = useState(false);
+
   if (mockData.length === 0) {
     return (
       <p className='py-6 text-center text-sm text-muted-foreground tracking-wide'>
@@ -55,24 +61,35 @@ const UpcomingAbsences = () => {
   }
 
   return (
-    <div className='grid'>
-      <Card>
-        <CardHeader>
-          <Heading title='Concedii' icon={CalendarPlus} />
-          <CardDescription>Următoarele perioade de concediu</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
-            {mockData.map((data) => (
-              <CardAbsence
-                key={`${data.lastName}-${data.startDate}`}
-                data={data}
-              />
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+    <>
+      <CreateAbsenceModal
+        isOpen={isOpenCreateModal}
+        onClose={() => setIsOpenCreateModal(false)}
+      />
+
+      <div className='grid'>
+        <Card>
+          <CardHeader>
+            <Heading
+              title='Concedii'
+              icon={CalendarPlus}
+              onClick={() => setIsOpenCreateModal(true)}
+            />
+            <CardDescription>Următoarele perioade de concediu</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
+              {mockData.map((data) => (
+                <CardAbsence
+                  key={`${data.lastName}-${data.startDate}`}
+                  data={data}
+                />
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </>
   );
 };
 
