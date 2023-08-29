@@ -61,14 +61,14 @@ const CardMeeting: React.FC<CardMeetingProps> = ({ data }) => {
             </DropdownMenuTrigger>
 
             <DropdownMenuContent className='w-[160px]'>
-              <DropdownMenuItem>
+              <DropdownMenuItem className='cursor-pointer'>
                 Detalii
                 <DropdownMenuShortcut>
                   <MoreHorizontal className='h-4 w-4 shrink-0' />
                 </DropdownMenuShortcut>
               </DropdownMenuItem>
 
-              <DropdownMenuItem>
+              <DropdownMenuItem className='cursor-pointer'>
                 Editează
                 <DropdownMenuShortcut>
                   <Pencil className='h-4 w-4 shrink-0' />
@@ -79,7 +79,7 @@ const CardMeeting: React.FC<CardMeetingProps> = ({ data }) => {
 
               <DropdownMenuItem
                 onClick={() => setOpenDeleteModal(true)}
-                className='text-red-600 hover:text-red-600'
+                className='text-red-600 hover:text-red-600 cursor-pointer'
               >
                 Șterge
                 <DropdownMenuShortcut>

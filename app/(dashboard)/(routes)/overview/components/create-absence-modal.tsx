@@ -3,31 +3,22 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
-import { format } from 'date-fns';
-import { Calendar as CalendarIcon } from 'lucide-react';
 import * as z from 'zod';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
 import {
   Form,
-  FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
 import { Modal } from '@/components/modal';
-import { cn } from '@/lib/utils';
+import RangeDatePicker from '@/components/range-date-picker';
 
 const formSchema = z.object({
-  rangeAbsence: z
+  range: z
     .object(
       {
         from: z.date(),
@@ -63,8 +54,6 @@ const CreateAbsenceModal: React.FC<CreateAbsenceModalProps> = ({
     resolver: zodResolver(formSchema),
   });
 
-  console.log(form.formState.errors);
-
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     console.log(values);
     // to reset the form when done and to close it
@@ -94,44 +83,12 @@ const CreateAbsenceModal: React.FC<CreateAbsenceModalProps> = ({
         <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
           <FormField
             control={form.control}
-            name='rangeAbsence'
+            name='range'
             render={({ field }) => (
               <div className='grid gap-4 py-4'>
                 <FormItem className='flex flex-col'>
                   <FormLabel>Alege perioada</FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant={'outline'}
-                          className={cn(
-                            'w-full pl-3 text-left font-normal',
-                            !field.value && 'text-muted-foreground'
-                          )}
-                        >
-                          {field.value?.from ? (
-                            field.value?.to ? (
-                              <>
-                                {format(field.value.from, 'LLL dd, y')} -{' '}
-                                {format(field.value.to, 'LLL dd, y')}
-                              </>
-                            ) : (
-                              format(field.value.from, 'LLL dd, y')
-                            )
-                          ) : null}
-                          <CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className='w-auto p-0' align='start'>
-                      <Calendar
-                        initialFocus
-                        mode='range'
-                        selected={field.value}
-                        onSelect={field.onChange}
-                      />
-                    </PopoverContent>
-                  </Popover>
+                  <RangeDatePicker field={field} />
                   <FormMessage />
                 </FormItem>
               </div>
