@@ -89,7 +89,10 @@ const CreateAbsenceModal: React.FC<CreateAbsenceModalProps> = ({
               <div className='grid gap-4 py-4'>
                 <FormItem className='flex flex-col'>
                   <FormLabel>Alege perioada</FormLabel>
-                  <RangeDatePicker field={field} />
+                  <RangeDatePicker
+                    value={field.value}
+                    onChange={field.onChange}
+                  />
                   <FormMessage />
                 </FormItem>
               </div>

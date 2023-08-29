@@ -18,10 +18,12 @@ import {
 } from '@/components/ui/form';
 import { Heading } from '@/components/heading';
 import { Textarea } from '@/components/ui/textarea';
+import DatePicker from '@/components/date-picker';
 
 const formSchema = z.object({
   title: z.string().min(1, 'Acest câmp este obligatoriu.'),
   description: z.string().min(1, 'Acest câmp este obligatoriu.'),
+  date: z.date({ required_error: 'Acest câmp este obligatoriu.' }),
 });
 
 interface MeetingFormProps {
@@ -103,6 +105,19 @@ const MeetingForm: React.FC<MeetingFormProps> = ({ initialData }) => {
                       disabled={loading}
                       {...field}
                     />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='date'
+              render={({ field }) => (
+                <FormItem className='grid gap-1'>
+                  <FormLabel>Alege o dată</FormLabel>
+                  <FormControl>
+                    <DatePicker value={field.value} onChange={field.onChange} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
