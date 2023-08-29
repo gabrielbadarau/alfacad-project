@@ -61,6 +61,7 @@ const CreateAbsenceModal: React.FC<CreateAbsenceModalProps> = ({
     onClose();
     form.reset();
     router.refresh();
+    // window.location.assign('/overview');
     // try {
     //   setLoading(true);
     //   const response = await axios.post('/api/stores', values);

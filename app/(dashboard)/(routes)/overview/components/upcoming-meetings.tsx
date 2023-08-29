@@ -1,4 +1,7 @@
+'use client';
+
 import { BellPlus } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 import { Heading } from '@/components/heading';
 
@@ -32,9 +35,15 @@ const mockData = [
 ];
 
 const UpcomingMeetings = () => {
+  const router = useRouter();
+
   return (
     <>
-      <Heading title='Următoarele întâlniri' icon={BellPlus} />
+      <Heading
+        title='Următoarele întâlniri'
+        icon={BellPlus}
+        onClick={() => router.push('/overview/meeting/new')}
+      />
 
       <div className='grid gap-4 md:grid-cols-2 xl:grid-cols-3'>
         {mockData.map((data) => (
