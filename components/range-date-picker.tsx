@@ -17,17 +17,19 @@ interface RangeDatePickerProps {
     to?: Date | undefined;
   };
   onChange: () => void;
+  disabled: boolean;
 }
 
 const RangeDatePicker: React.FC<RangeDatePickerProps> = ({
   value,
   onChange,
+  disabled,
 }) => {
   const currentDate = new Date();
 
   return (
     <Popover>
-      <PopoverTrigger asChild>
+      <PopoverTrigger disabled={disabled} asChild>
         <FormControl>
           <Button
             variant={'outline'}
@@ -50,7 +52,7 @@ const RangeDatePicker: React.FC<RangeDatePickerProps> = ({
           </Button>
         </FormControl>
       </PopoverTrigger>
-      <PopoverContent className='w-auto p-0' align='start'>
+      <PopoverContent className='w-auto p-0' align='center'>
         <Calendar
           initialFocus
           mode='range'

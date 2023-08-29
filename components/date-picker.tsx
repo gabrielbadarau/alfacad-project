@@ -1,5 +1,5 @@
 import { format } from 'date-fns';
-import { Calendar as CalendarIcon } from 'lucide-react';
+import { Calendar as CalendarIcon, X } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { FormControl } from '@/components/ui/form';
@@ -10,23 +10,29 @@ import {
 } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
 import { cn } from '@/lib/utils';
+import { PopoverClose } from '@radix-ui/react-popover';
 
 interface DatePickerProps {
   value: Date;
   onChange: () => void;
+  disabled: boolean;
 }
 
-const DatePicker: React.FC<DatePickerProps> = ({ value, onChange }) => {
+const DatePicker: React.FC<DatePickerProps> = ({
+  value,
+  onChange,
+  disabled,
+}) => {
   const currentDate = new Date();
 
   return (
     <Popover>
-      <PopoverTrigger asChild>
+      <PopoverTrigger disabled={disabled} asChild>
         <FormControl>
           <Button
             variant={'outline'}
             className={cn(
-              'w-[348px] pl-3 text-left font-normal',
+              'w-full pl-3 text-left font-normal',
               !value && 'text-muted-foreground'
             )}
           >
@@ -35,7 +41,14 @@ const DatePicker: React.FC<DatePickerProps> = ({ value, onChange }) => {
           </Button>
         </FormControl>
       </PopoverTrigger>
-      <PopoverContent className='w-auto p-0' align='start'>
+      <PopoverContent className='w-auto p-0' align='center'>
+        <div className='flex m-1'>
+          <div className='flex-1'></div>
+          <PopoverClose>
+            <X size={21} className='text-primary/60 hover:text-destructive' />
+          </PopoverClose>
+        </div>
+
         <Calendar
           initialFocus
           mode='single'

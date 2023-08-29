@@ -32,7 +32,7 @@ const formSchema = z.object({
       if (!values.to) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: 'Te rugăm sa selectezi o dată de final',
+          message: 'Te rugăm să selectezi o dată de final',
         });
       }
     }),
@@ -92,6 +92,7 @@ const CreateAbsenceModal: React.FC<CreateAbsenceModalProps> = ({
                   <RangeDatePicker
                     value={field.value}
                     onChange={field.onChange}
+                    disabled={loading}
                   />
                   <FormMessage />
                 </FormItem>

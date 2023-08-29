@@ -19,11 +19,32 @@ import {
 import { Heading } from '@/components/heading';
 import { Textarea } from '@/components/ui/textarea';
 import DatePicker from '@/components/date-picker';
+import TimePicker from '@/components/time-picker';
 
 const formSchema = z.object({
   title: z.string().min(1, 'Acest câmp este obligatoriu.'),
-  description: z.string().min(1, 'Acest câmp este obligatoriu.'),
   date: z.date({ required_error: 'Acest câmp este obligatoriu.' }),
+  time: z
+    .string({ required_error: 'Acest câmp este obligatoriu.' })
+    .superRefine((value, ctx) => {
+      const time = value.split(':');
+
+      if (!time[0]) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Te rugăm să selectezi ora.',
+        });
+      }
+
+      if (!time[1]) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Te rugăm să selectezi minutele.',
+        });
+      }
+    }),
+  address: z.string().min(1, 'Acest câmp este obligatoriu.'),
+  description: z.string().min(1, 'Acest câmp este obligatoriu.'),
 });
 
 interface MeetingFormProps {
@@ -51,6 +72,7 @@ const MeetingForm: React.FC<MeetingFormProps> = ({ initialData }) => {
     defaultValues: initialData || {
       title: '',
       description: '',
+      address: '',
     },
   });
 
@@ -93,6 +115,53 @@ const MeetingForm: React.FC<MeetingFormProps> = ({ initialData }) => {
                 </FormItem>
               )}
             />
+
+            <FormField
+              control={form.control}
+              name='date'
+              render={({ field }) => (
+                <FormItem className='grid gap-1'>
+                  <FormLabel>Alege data</FormLabel>
+                  <FormControl>
+                    <DatePicker
+                      value={field.value}
+                      onChange={field.onChange}
+                      disabled={loading}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name='time'
+              render={({ field }) => (
+                <FormItem className='grid gap-1'>
+                  <FormLabel>Alege ora</FormLabel>
+                  <FormControl>
+                    <TimePicker value={field.value} onChange={field.onChange} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name='address'
+              render={({ field }) => (
+                <FormItem className='grid gap-1'>
+                  <FormLabel>Locul întâlnirii</FormLabel>
+                  <FormControl>
+                    <Input disabled={loading} {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <FormField
               control={form.control}
               name='description'
@@ -105,19 +174,6 @@ const MeetingForm: React.FC<MeetingFormProps> = ({ initialData }) => {
                       disabled={loading}
                       {...field}
                     />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name='date'
-              render={({ field }) => (
-                <FormItem className='grid gap-1'>
-                  <FormLabel>Alege o dată</FormLabel>
-                  <FormControl>
-                    <DatePicker value={field.value} onChange={field.onChange} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

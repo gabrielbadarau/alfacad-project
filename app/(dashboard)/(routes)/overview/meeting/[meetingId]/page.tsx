@@ -13,6 +13,7 @@ const MeetingPage = async ({ params }: { params: { sizeId: string } }) => {
 
       <div className='hidden lg:block'>
         <Image
+          priority
           src='/meeting.svg'
           height={1300}
           width={1300}
