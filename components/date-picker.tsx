@@ -27,9 +27,10 @@ const DatePicker: React.FC<DatePickerProps> = ({
 
   return (
     <Popover>
-      <PopoverTrigger disabled={disabled} asChild>
+      <PopoverTrigger asChild>
         <FormControl>
           <Button
+            disabled={disabled}
             variant={'outline'}
             className={cn(
               'w-full pl-3 text-left font-normal',

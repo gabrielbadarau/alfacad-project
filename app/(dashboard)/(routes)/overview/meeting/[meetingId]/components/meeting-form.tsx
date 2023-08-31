@@ -5,7 +5,6 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useParams, useRouter } from 'next/navigation';
 
-import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
@@ -20,6 +19,10 @@ import { Heading } from '@/components/heading';
 import { Textarea } from '@/components/ui/textarea';
 import DatePicker from '@/components/date-picker';
 import TimePicker from '@/components/time-picker';
+import MultiUserSelect from '@/components/multi-user-select';
+
+import { zodResolver } from '@hookform/resolvers/zod';
+import { User } from '@/types/user';
 
 const formSchema = z.object({
   title: z.string().min(1, 'Acest câmp este obligatoriu.'),
@@ -43,6 +46,7 @@ const formSchema = z.object({
         });
       }
     }),
+  users: z.string().array().min(1),
   address: z.string().min(1, 'Acest câmp este obligatoriu.'),
   description: z.string().min(1, 'Acest câmp este obligatoriu.'),
 });
@@ -50,14 +54,16 @@ const formSchema = z.object({
 interface MeetingFormProps {
   // TODO replace any
   initialData: any;
+  users: User[];
 }
 
-const MeetingForm: React.FC<MeetingFormProps> = ({ initialData }) => {
+const MeetingForm: React.FC<MeetingFormProps> = ({ initialData, users }) => {
+  console.log(users);
   const params = useParams();
   const router = useRouter();
 
   const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const title = initialData
     ? 'Editează întâlnirea'
@@ -73,6 +79,7 @@ const MeetingForm: React.FC<MeetingFormProps> = ({ initialData }) => {
       title: '',
       description: '',
       address: '',
+      users: [],
     },
   });
 
@@ -141,7 +148,29 @@ const MeetingForm: React.FC<MeetingFormProps> = ({ initialData }) => {
                 <FormItem className='grid gap-1'>
                   <FormLabel>Alege ora</FormLabel>
                   <FormControl>
-                    <TimePicker value={field.value} onChange={field.onChange} />
+                    <TimePicker
+                      value={field.value}
+                      onChange={field.onChange}
+                      disabled={loading}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name='users'
+              render={({ field }) => (
+                <FormItem className='grid gap-1'>
+                  <FormLabel>Alege participanții</FormLabel>
+                  <FormControl>
+                    <MultiUserSelect
+                      onChange={field.onChange}
+                      values={field.value}
+                      options={users}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -180,6 +209,7 @@ const MeetingForm: React.FC<MeetingFormProps> = ({ initialData }) => {
               )}
             />
           </div>
+
           <div className='pt-6 space-x-2 flex items-center justify-end w-full'>
             <Button
               className='sm:w-auto w-full'

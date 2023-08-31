@@ -31,9 +31,14 @@ const minutesArray = ['00', '10', '20', '30', '40', '50'];
 interface TimePickerProps {
   value: string;
   onChange: (...event: any[]) => void;
+  disabled: boolean;
 }
 
-const TimePicker: React.FC<TimePickerProps> = ({ value, onChange }) => {
+const TimePicker: React.FC<TimePickerProps> = ({
+  value,
+  onChange,
+  disabled,
+}) => {
   const hour = useRef('');
   const minute = useRef('');
 
@@ -55,7 +60,11 @@ const TimePicker: React.FC<TimePickerProps> = ({ value, onChange }) => {
 
   return (
     <div className='flex flex-row flex-nowrap items-center gap-1.5'>
-      <Select onValueChange={handleHourChange} defaultValue={value}>
+      <Select
+        disabled={disabled}
+        onValueChange={handleHourChange}
+        defaultValue={value}
+      >
         <FormControl className='w-[65px]'>
           <SelectTrigger>
             <SelectValue />
@@ -72,7 +81,11 @@ const TimePicker: React.FC<TimePickerProps> = ({ value, onChange }) => {
 
       <span className='text-lg font-bold'>:</span>
 
-      <Select onValueChange={handleMinuteChange} defaultValue={value}>
+      <Select
+        disabled={disabled}
+        onValueChange={handleMinuteChange}
+        defaultValue={value}
+      >
         <FormControl className='w-[65px]'>
           <SelectTrigger>
             <SelectValue />
