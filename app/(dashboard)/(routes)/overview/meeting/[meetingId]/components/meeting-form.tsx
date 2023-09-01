@@ -46,7 +46,7 @@ const formSchema = z.object({
         });
       }
     }),
-  users: z.string().array().min(1),
+  users: z.string().array().min(1, 'Alege cel puțin o persoană.'),
   address: z.string().min(1, 'Acest câmp este obligatoriu.'),
   description: z.string().min(1, 'Acest câmp este obligatoriu.'),
 });
@@ -58,12 +58,11 @@ interface MeetingFormProps {
 }
 
 const MeetingForm: React.FC<MeetingFormProps> = ({ initialData, users }) => {
-  console.log(users);
   const params = useParams();
   const router = useRouter();
 
   const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const title = initialData
     ? 'Editează întâlnirea'
@@ -141,41 +140,45 @@ const MeetingForm: React.FC<MeetingFormProps> = ({ initialData, users }) => {
               )}
             />
 
-            <FormField
-              control={form.control}
-              name='time'
-              render={({ field }) => (
-                <FormItem className='grid gap-1'>
-                  <FormLabel>Alege ora</FormLabel>
-                  <FormControl>
-                    <TimePicker
-                      value={field.value}
-                      onChange={field.onChange}
-                      disabled={loading}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className='flex flex-wrap gap-4'>
+              <FormField
+                control={form.control}
+                name='time'
+                render={({ field }) => (
+                  <FormItem className=''>
+                    <FormLabel>Alege ora</FormLabel>
+                    <FormControl>
+                      <TimePicker
+                        value={field.value}
+                        onChange={field.onChange}
+                        disabled={loading}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name='users'
-              render={({ field }) => (
-                <FormItem className='grid gap-1'>
-                  <FormLabel>Alege participanții</FormLabel>
-                  <FormControl>
-                    <MultiUserSelect
-                      onChange={field.onChange}
-                      values={field.value}
-                      options={users}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              <FormField
+                control={form.control}
+                name='users'
+                render={({ field }) => (
+                  <FormItem className='flex-1'>
+                    <FormLabel htmlFor='users'>Alege participanții</FormLabel>
+                    <FormControl>
+                      <MultiUserSelect
+                        id='users'
+                        onChange={field.onChange}
+                        values={field.value}
+                        options={users}
+                        disabled={loading}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
 
             <FormField
               control={form.control}
@@ -184,7 +187,11 @@ const MeetingForm: React.FC<MeetingFormProps> = ({ initialData, users }) => {
                 <FormItem className='grid gap-1'>
                   <FormLabel>Locul întâlnirii</FormLabel>
                   <FormControl>
-                    <Input disabled={loading} {...field} />
+                    <Input
+                      autoComplete='address'
+                      disabled={loading}
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -210,7 +217,7 @@ const MeetingForm: React.FC<MeetingFormProps> = ({ initialData, users }) => {
             />
           </div>
 
-          <div className='pt-6 space-x-2 flex items-center justify-end w-full'>
+          <div className='space-x-2 flex items-center justify-end w-full'>
             <Button
               className='sm:w-auto w-full'
               disabled={loading}

@@ -17,7 +17,7 @@ const MeetingPage = async ({ params }: { params: { sizeId: string } }) => {
 
   return (
     <div className='flex flex-row gap-20 p-8 pt-6 h-full'>
-      <div className='w-full min-w-[348px] space-y-4'>
+      <div className='w-full space-y-4'>
         <MeetingForm initialData={null} users={standardUsers} />
       </div>
 

@@ -61,6 +61,7 @@ const TimePicker: React.FC<TimePickerProps> = ({
   return (
     <div className='flex flex-row flex-nowrap items-center gap-1.5'>
       <Select
+        name='hour'
         disabled={disabled}
         onValueChange={handleHourChange}
         defaultValue={value}
@@ -82,6 +83,7 @@ const TimePicker: React.FC<TimePickerProps> = ({
       <span className='text-lg font-bold'>:</span>
 
       <Select
+        name='minutes'
         disabled={disabled}
         onValueChange={handleMinuteChange}
         defaultValue={value}
