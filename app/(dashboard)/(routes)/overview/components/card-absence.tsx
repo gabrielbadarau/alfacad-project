@@ -7,10 +7,10 @@ import { useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import DeleteModal from '@/components/delete-modal';
+import { Vacation } from '@/types/vacation';
 
 interface CardAbsenceProps {
-  // TODO replay any
-  data: any;
+  data: Vacation;
 }
 
 const CardAbsence: React.FC<CardAbsenceProps> = ({ data }) => {
@@ -38,8 +38,8 @@ const CardAbsence: React.FC<CardAbsenceProps> = ({ data }) => {
           <Avatar className='h-9 w-9'>
             <AvatarImage src={data.imageUrl} alt='Avatar' />
             <AvatarFallback className='bg-slate-800 text-white'>
-              {data.firstName.charAt(0)}
-              {data.lastName.charAt(0)}
+              {data.firstName?.charAt(0)}
+              {data.lastName?.charAt(0)}
             </AvatarFallback>
           </Avatar>
 

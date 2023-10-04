@@ -66,7 +66,7 @@ const CreateAbsenceModal: React.FC<CreateAbsenceModalProps> = ({
 
       await axios.post('/api/vacation', data);
 
-      toast.success('Concediu creat.');
+      toast.success('Concediu planificat.');
       onClose();
       router.refresh();
     } catch (error) {

@@ -10,55 +10,17 @@ import {
   CardHeader,
 } from '@/components/ui/card';
 import { Heading } from '@/components/heading';
+import { Vacation } from '@/types/vacation';
 
 import CardAbsence from './card-absence';
 import CreateAbsenceModal from './create-absence-modal';
 
-const mockData = [
-  {
-    firstName: 'Bernete',
-    lastName: 'Rupel',
-    email: 'brupel0brupel0brupel0@prweb.com',
-    startDate: new Date('2023-08-16'),
-    endDate: new Date('2023-08-16'),
-    imageUrl: '',
-  },
-  {
-    firstName: 'Pattie Pattie Pattie Pattie',
-    lastName: 'Mycock',
-    email: 'pmycock1@wikipedia.org',
-    startDate: new Date('2023-04-16'),
-    endDate: new Date('2023-04-30'),
-    imageUrl: '',
-  },
-  {
-    firstName: 'Brannon',
-    lastName: 'Dockree',
-    email: 'bdockree2@forbes.com',
-    startDate: new Date('2023-02-27'),
-    endDate: new Date('2023-03-05'),
-    imageUrl: '',
-  },
-  {
-    firstName: 'Cherlyn',
-    lastName: 'Catterell',
-    email: 'ccatterell3@toplist.cz',
-    startDate: new Date('2023-01-16'),
-    endDate: new Date('2023-02-01'),
-    imageUrl: '',
-  },
-];
+interface UpcomingAbsencesProps {
+  vacations: Vacation[];
+}
 
-const UpcomingAbsences = () => {
+const UpcomingAbsences: React.FC<UpcomingAbsencesProps> = ({ vacations }) => {
   const [isOpenCreateModal, setIsOpenCreateModal] = useState(false);
-
-  if (mockData.length === 0) {
-    return (
-      <p className='py-6 text-center text-sm text-muted-foreground tracking-wide'>
-        Niciun concediu planificat
-      </p>
-    );
-  }
 
   return (
     <>
@@ -78,14 +40,20 @@ const UpcomingAbsences = () => {
             <CardDescription>Următoarele perioade de concediu</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
-              {mockData.map((data) => (
-                <CardAbsence
-                  key={`${data.lastName}-${data.startDate}`}
-                  data={data}
-                />
-              ))}
-            </div>
+            {vacations.length === 0 ? (
+              <p className='py-6 text-center text-sm text-muted-foreground tracking-wide'>
+                Niciun concediu planificat
+              </p>
+            ) : (
+              <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
+                {vacations.map((data) => (
+                  <CardAbsence
+                    key={`${data.lastName}-${data.startDate.getTime()}`}
+                    data={data}
+                  />
+                ))}
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
