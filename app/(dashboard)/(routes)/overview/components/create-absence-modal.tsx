@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import * as z from 'zod';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
@@ -55,22 +57,24 @@ const CreateAbsenceModal: React.FC<CreateAbsenceModalProps> = ({
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
-    // to reset the form when done and to close it
+    try {
+      setLoading(true);
+      const data = {
+        startDate: values.range.from.toISOString(),
+        endDate: values.range.to?.toISOString(),
+      };
 
-    onClose();
-    form.reset();
-    router.refresh();
-    // window.location.assign('/overview');
-    // try {
-    //   setLoading(true);
-    //   const response = await axios.post('/api/stores', values);
-    //   window.location.assign(`/${response.data.id}`);
-    // } catch (error) {
-    //   toast.error('Something went wrong');
-    // } finally {
-    //   setLoading(false);
-    // }
+      await axios.post('/api/vacation', data);
+
+      toast.success('Concediu creat.');
+      onClose();
+      router.refresh();
+    } catch (error) {
+      toast.error('Ceva nu a mers bine.');
+    } finally {
+      setLoading(false);
+      form.reset();
+    }
   };
 
   return (
