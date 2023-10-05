@@ -1,7 +1,7 @@
 'use client';
 
 import { format, differenceInDays } from 'date-fns';
-import { Trash2 } from 'lucide-react';
+import { Trash2, Pencil } from 'lucide-react';
 import { useState } from 'react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -66,7 +66,7 @@ const CardAbsence: React.FC<CardAbsenceProps> = ({ data }) => {
             className='flex h-8 w-12 shrink-0 text-slate-700'
             onClick={() => setOpenDeleteModal(true)}
           >
-            <Trash2 className='shrink-0 h-5 w-5' />
+            <Pencil className='shrink-0 h-5 w-5' />
           </Button>
         </div>
       </div>

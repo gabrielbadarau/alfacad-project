@@ -4,7 +4,7 @@ import UpcomingAbsences from './components/upcoming-absences';
 import UpcomingMeetings from './components/upcoming-meetings';
 
 const OverviewPage = async () => {
-  const vacations = await getVacations();
+  const vacations = await getVacations(true);
 
   return (
     <div className='space-y-4 p-8 pt-6'>

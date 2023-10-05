@@ -24,8 +24,8 @@ interface MultiUserSelectProps {
   values: string[];
   onChange: (...event: any[]) => void;
   options: User[];
-  disabled: boolean;
-  id: string;
+  disabled?: boolean;
+  id?: string;
 }
 
 const MultiUserSelect: React.FC<MultiUserSelectProps> = ({

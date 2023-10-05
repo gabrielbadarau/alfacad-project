@@ -18,14 +18,17 @@ interface RangeDatePickerProps {
   };
   onChange: () => void;
   disabled: boolean;
+  onlyFromCurrentDate?: boolean;
 }
 
 const RangeDatePicker: React.FC<RangeDatePickerProps> = ({
   value,
   onChange,
   disabled,
+  onlyFromCurrentDate = false,
 }) => {
   const currentDate = new Date();
+  const fromDate = onlyFromCurrentDate ? currentDate : undefined;
 
   return (
     <Popover>
@@ -58,7 +61,7 @@ const RangeDatePicker: React.FC<RangeDatePickerProps> = ({
           mode='range'
           selected={value}
           onSelect={onChange}
-          fromDate={currentDate}
+          fromDate={fromDate}
         />
       </PopoverContent>
     </Popover>

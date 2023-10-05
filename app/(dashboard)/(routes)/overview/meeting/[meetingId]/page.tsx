@@ -1,19 +1,11 @@
 import Image from 'next/image';
 
-import { clerkClient } from '@clerk/nextjs';
+import { getStandardUsers } from '@/actions/get-standard-users';
 
 import MeetingForm from './components/meeting-form';
 
 const MeetingPage = async ({ params }: { params: { sizeId: string } }) => {
-  const standardUsers = (await clerkClient.users.getUserList())
-    .filter((user) => user.privateMetadata.standardUser)
-    .map((user) => ({
-      emailAddress: user.emailAddresses[0].emailAddress,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      id: user.id,
-      imageUrl: user.imageUrl,
-    }));
+  const standardUsers = await getStandardUsers();
 
   return (
     <div className='flex flex-row gap-20 p-8 pt-6 h-full'>

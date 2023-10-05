@@ -31,6 +31,11 @@ const MainNav: React.FC<MainNavProps> = ({
       label: 'Proiecte',
       active: pathname === `/projects`,
     },
+    {
+      href: `/vacations`,
+      label: 'Concedii',
+      active: pathname === `/vacations`,
+    },
   ];
 
   if (hideRoutes) {

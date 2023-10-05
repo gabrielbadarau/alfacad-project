@@ -1,17 +1,36 @@
 import prismadb from '@/lib/prismadb';
 import { currentUser } from '@clerk/nextjs';
 
-export const getVacations = async () => {
+export const getVacations = async (onlyUpcoming: boolean) => {
   try {
     const user = await currentUser();
+    let userVacations = [];
 
     if (!user) {
       throw new Error('Unauthorized');
     }
 
-    const userVacations = await prismadb.vacation.findMany({
-      where: { userId: user.id },
-    });
+    if (onlyUpcoming) {
+      userVacations = await prismadb.vacation.findMany({
+        where: {
+          userId: user.id,
+          endDate: {
+            gte: new Date(),
+          },
+        },
+        orderBy: {
+          endDate: 'asc',
+        },
+        take: 8,
+      });
+    } else {
+      userVacations = await prismadb.vacation.findMany({
+        where: { userId: user.id },
+        orderBy: {
+          endDate: 'desc',
+        },
+      });
+    }
 
     return userVacations.map((userVacation) => ({
       firstName: user.firstName,
