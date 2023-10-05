@@ -58,11 +58,8 @@ const AllAbsences: React.FC<AllAbsencesProps> = ({ vacations, users }) => {
             </p>
           ) : (
             <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
-              {vacations.map((data, index) => (
-                <CardAbsence
-                  key={`${data.lastName}-${data.startDate}-${index}`}
-                  data={data}
-                />
+              {vacations.map((data) => (
+                <CardAbsence key={`${data.lastName}-${data.id}`} data={data} />
               ))}
             </div>
           )}

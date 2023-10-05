@@ -1,8 +1,11 @@
 'use client';
 
 import { format, differenceInDays } from 'date-fns';
-import { Trash2, Pencil } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -16,6 +19,7 @@ interface CardAbsenceProps {
 const CardAbsence: React.FC<CardAbsenceProps> = ({ data }) => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const days = differenceInDays(data.endDate, data.startDate) + 1;
   const unit = days > 1 ? 'zile' : 'zi';
@@ -24,13 +28,27 @@ const CardAbsence: React.FC<CardAbsenceProps> = ({ data }) => {
       ? `${format(data.startDate, 'MMM d')} - ${format(data.endDate, 'MMM d')}`
       : `${format(data.startDate, 'MMM d')}`;
 
+  const onDelete = async () => {
+    try {
+      setLoading(true);
+      await axios.delete(`/api/vacation/${data.id}`);
+      toast.success('Concediu șters.');
+    } catch (error) {
+      toast.error('Ceva nu a mers bine.');
+    } finally {
+      setLoading(false);
+      setOpenDeleteModal(false);
+      router.refresh();
+    }
+  };
+
   return (
     <>
       <DeleteModal
         isOpen={openDeleteModal}
         onClose={() => setOpenDeleteModal(false)}
         loading={loading}
-        onConfirm={() => {}}
+        onConfirm={onDelete}
       />
 
       <div className='flex flex-col flex-nowrap gap-4 border-2 rounded-lg p-4 border-slate-100 min-w-[18rem]'>
@@ -66,7 +84,7 @@ const CardAbsence: React.FC<CardAbsenceProps> = ({ data }) => {
             className='flex h-8 w-12 shrink-0 text-slate-700'
             onClick={() => setOpenDeleteModal(true)}
           >
-            <Pencil className='shrink-0 h-5 w-5' />
+            <Trash2 className='shrink-0 h-5 w-5' />
           </Button>
         </div>
       </div>

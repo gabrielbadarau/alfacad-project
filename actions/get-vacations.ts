@@ -33,6 +33,7 @@ export const getVacations = async (onlyUpcoming: boolean) => {
     }
 
     return userVacations.map((userVacation) => ({
+      id: userVacation.id,
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.emailAddresses[0].emailAddress,
