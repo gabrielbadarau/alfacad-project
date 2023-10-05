@@ -1,19 +1,30 @@
 import prismadb from '@/lib/prismadb';
 import { currentUser } from '@clerk/nextjs';
+import { clerkClient } from '@clerk/nextjs';
 
-export const getVacations = async (onlyUpcoming: boolean) => {
+export const getVacations = async (
+  onlyUpcoming: boolean = true,
+  filteredUsers?: string[]
+) => {
   try {
+    let usersVacations = [];
     const user = await currentUser();
-    let userVacations = [];
+    const whereSearch = { userId: {} };
 
     if (!user) {
       throw new Error('Unauthorized');
     }
 
+    if (filteredUsers) {
+      const users = Array.isArray(filteredUsers)
+        ? filteredUsers
+        : [filteredUsers];
+      whereSearch.userId = { in: users };
+    }
+
     if (onlyUpcoming) {
-      userVacations = await prismadb.vacation.findMany({
+      usersVacations = await prismadb.vacation.findMany({
         where: {
-          userId: user.id,
           endDate: {
             gte: new Date(),
           },
@@ -24,23 +35,29 @@ export const getVacations = async (onlyUpcoming: boolean) => {
         take: 8,
       });
     } else {
-      userVacations = await prismadb.vacation.findMany({
-        where: { userId: user.id },
+      usersVacations = await prismadb.vacation.findMany({
+        where: whereSearch,
         orderBy: {
           endDate: 'desc',
         },
       });
     }
 
-    return userVacations.map((userVacation) => ({
-      id: userVacation.id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.emailAddresses[0].emailAddress,
-      startDate: new Date(userVacation.startDate),
-      endDate: new Date(userVacation.endDate),
-      imageUrl: user.imageUrl,
-    }));
+    return await Promise.all(
+      usersVacations.map(async (userVacation) => {
+        const userData = await clerkClient.users.getUser(userVacation.userId);
+
+        return {
+          id: userVacation.id,
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          email: userData.emailAddresses[0].emailAddress,
+          startDate: new Date(userVacation.startDate),
+          endDate: new Date(userVacation.endDate),
+          imageUrl: userData.imageUrl,
+        };
+      })
+    );
   } catch (error) {
     console.log('[VACATIONS_GET]', error);
     return [];

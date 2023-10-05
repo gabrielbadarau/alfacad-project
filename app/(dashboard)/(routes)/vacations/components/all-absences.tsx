@@ -6,12 +6,11 @@ import { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import CardAbsence from '@/components/card-absence';
-import MultiUserSelect from '@/components/multi-user-select';
 import { Vacation } from '@/types/vacation';
 import { User } from '@/types/user';
-import { Label } from '@/components/ui/label';
 
 import CreateAbsenceModal from './create-absence-modal';
+import Filter from './filter';
 
 interface AllAbsencesProps {
   vacations: Vacation[];
@@ -20,10 +19,6 @@ interface AllAbsencesProps {
 
 const AllAbsences: React.FC<AllAbsencesProps> = ({ vacations, users }) => {
   const [isOpenCreateModal, setIsOpenCreateModal] = useState(false);
-  const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
-  const filterByUser = (e: string[]) => {
-    setSelectedUsers(e);
-  };
 
   return (
     <>
@@ -38,16 +33,7 @@ const AllAbsences: React.FC<AllAbsencesProps> = ({ vacations, users }) => {
         >
           <CalendarPlus className='mr-2 h-4 w-4' /> Planifică un concediu
         </Button>
-        <div className='w-full sm:w-auto'>
-          <Label className='block mb-1.5'>Filtrează după utilizator</Label>
-          <div className='w-full sm:min-w-[20.5rem]'>
-            <MultiUserSelect
-              onChange={filterByUser}
-              values={selectedUsers}
-              options={users}
-            />
-          </div>
-        </div>
+        <Filter users={users} />
       </div>
 
       <Card>

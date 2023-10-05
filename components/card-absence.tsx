@@ -1,7 +1,7 @@
 'use client';
 
 import { format, differenceInDays } from 'date-fns';
-import { Trash2 } from 'lucide-react';
+import { Trash2, Check, Hourglass, Clock9 } from 'lucide-react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
@@ -20,6 +20,9 @@ const CardAbsence: React.FC<CardAbsenceProps> = ({ data }) => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const currentDate = new Date();
+  const isVacationDone =
+    data.endDate >= currentDate && data.startDate >= currentDate ? false : true;
 
   const days = differenceInDays(data.endDate, data.startDate) + 1;
   const unit = days > 1 ? 'zile' : 'zi';
@@ -51,7 +54,21 @@ const CardAbsence: React.FC<CardAbsenceProps> = ({ data }) => {
         onConfirm={onDelete}
       />
 
-      <div className='flex flex-col flex-nowrap gap-4 border-2 rounded-lg p-4 border-slate-100 min-w-[18rem]'>
+      <div className='flex flex-col flex-nowrap gap-4 border-2 rounded-lg p-4 border-slate-100 min-w-[18rem] relative'>
+        {data.endDate < currentDate ? (
+          <span className='flex justify-center w-6 text-sm p-1 absolute -right-1 -top-1 text-center rounded-3xl bg-green-600 text-white'>
+            <Check className='shrink-0 h-4 w-4' />
+          </span>
+        ) : (
+          <span className='flex justify-center w-6 text-sm p-1 absolute -right-1 -top-1 text-center rounded-3xl bg-slate-800 text-white'>
+            {isVacationDone ? (
+              <Hourglass className='shrink-0 h-4 w-4' />
+            ) : (
+              <Clock9 className='shrink-0 h-4 w-4' />
+            )}
+          </span>
+        )}
+
         <div className='flex flex-row flex-nowrap'>
           <Avatar className='h-9 w-9'>
             <AvatarImage src={data.imageUrl} alt='Avatar' />

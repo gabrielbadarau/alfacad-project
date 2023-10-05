@@ -3,8 +3,18 @@ import { getStandardUsers } from '@/actions/get-standard-users';
 
 import AllAbsences from './components/all-absences';
 
-const VacationsPage = async () => {
-  const vacations = await getVacations(false);
+export const revalidate = 0;
+
+interface VacationsPageProps {
+  searchParams: {
+    users: string[];
+  };
+}
+
+const VacationsPage: React.FC<VacationsPageProps> = async ({
+  searchParams,
+}) => {
+  const vacations = await getVacations(false, searchParams.users);
   const standardUsers = await getStandardUsers();
 
   return (
