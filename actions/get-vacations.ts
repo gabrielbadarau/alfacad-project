@@ -10,6 +10,8 @@ export const getVacations = async (
     let usersVacations = [];
     const user = await currentUser();
     const whereSearch = { userId: {} };
+    const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
 
     if (!user) {
       throw new Error('Unauthorized');
@@ -26,7 +28,7 @@ export const getVacations = async (
       usersVacations = await prismadb.vacation.findMany({
         where: {
           endDate: {
-            gte: new Date(),
+            gte: currentDate,
           },
         },
         orderBy: {

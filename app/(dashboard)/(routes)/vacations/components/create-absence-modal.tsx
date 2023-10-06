@@ -60,8 +60,8 @@ const CreateAbsenceModal: React.FC<CreateAbsenceModalProps> = ({
     try {
       setLoading(true);
       const data = {
-        startDate: values.range.from.toISOString(),
-        endDate: values.range.to?.toISOString(),
+        startDate: values.range.from,
+        endDate: values.range.to,
       };
 
       await axios.post('/api/vacation', data);
