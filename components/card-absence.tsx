@@ -10,8 +10,8 @@ import toast from 'react-hot-toast';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import DeleteModal from '@/components/delete-modal';
+import Ribbon from '@/components/ribbon';
 import { Vacation } from '@/types/vacation';
-import Ribbon from './ribbon';
 
 interface CardAbsenceProps {
   data: Vacation;

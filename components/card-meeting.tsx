@@ -10,6 +10,8 @@ import {
   Pencil,
   Trash2,
   MoreHorizontal,
+  Users,
+  PencilLine,
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -25,17 +27,18 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import DeleteModal from '@/components/delete-modal';
+import UserBullet from '@/components/user-bullet';
+import { Meeting } from '@/types/meeting';
 
 interface CardMeetingProps {
-  // TODO replace any
-  data: any;
+  data: Meeting;
 }
 
 const CardMeeting: React.FC<CardMeetingProps> = ({ data }) => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const formatDate = format(data.date, 'd MMMM', { locale: ro });
+  const formatDate = format(data.date, 'd MMMM yyyy', { locale: ro });
 
   return (
     <>
@@ -102,8 +105,18 @@ const CardMeeting: React.FC<CardMeetingProps> = ({ data }) => {
             <p className='tracking-tighter'>{data.time}</p>
           </div>
           <div className='flex flex-row gap-2'>
+            <Users className='shrink-0' />
+            {data.users.map((user) => (
+              <UserBullet key={user.id} user={user} />
+            ))}
+          </div>
+          <div className='flex flex-row gap-2'>
             <MapPin className='shrink-0' />
             <p className='tracking-tighter truncate'>{data.address}</p>
+          </div>
+          <div className='flex flex-row gap-2'>
+            <PencilLine className='shrink-0' />
+            <p>{data.address}</p>
           </div>
         </CardContent>
       </Card>

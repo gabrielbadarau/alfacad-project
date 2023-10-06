@@ -61,7 +61,7 @@ export const getVacations = async (
       })
     );
   } catch (error) {
-    console.log('[VACATIONS_GET]', error);
+    console.log('[VACATION_GET]', error);
     return [];
   }
 };

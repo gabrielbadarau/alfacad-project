@@ -15,10 +15,9 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { Separator } from '@/components/ui/separator';
-
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
 import { User } from '@/types/user';
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 
 interface MultiUserSelectProps {
   values: string[];

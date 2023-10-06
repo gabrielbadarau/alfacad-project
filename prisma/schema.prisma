@@ -19,3 +19,13 @@ model Vacation {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model Meeting {
+  id          String   @id @default(uuid())
+  title       String
+  date        DateTime
+  time        String
+  users       String
+  address     String
+  description String
+}

@@ -4,6 +4,8 @@ import * as z from 'zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useParams, useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
+import axios from 'axios';
 
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -83,22 +85,20 @@ const MeetingForm: React.FC<MeetingFormProps> = ({ initialData, users }) => {
   });
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    console.log(data);
-    // try {
-    //   setLoading(true);
-    //   if (initialData) {
-    //     await axios.patch(`/api/${params.storeId}/billboards/${params.billboardId}`, data);
-    //   } else {
-    //     await axios.post(`/api/${params.storeId}/billboards`, data);
-    //   }
-    //   router.refresh();
-    //   router.push(`/${params.storeId}/billboards`);
-    //   toast.success(toastMessage);
-    // } catch (error: any) {
-    //   toast.error('Something went wrong.');
-    // } finally {
-    //   setLoading(false);
-    // }
+    try {
+      setLoading(true);
+
+      await axios.post('/api/meeting', data);
+
+      router.refresh();
+      router.push(`/overview`);
+      toast.success('Intâlnire planificată.');
+    } catch (error) {
+      toast.error('Ceva nu a mers bine.');
+    } finally {
+      setLoading(false);
+      form.reset();
+    }
   };
 
   return (
