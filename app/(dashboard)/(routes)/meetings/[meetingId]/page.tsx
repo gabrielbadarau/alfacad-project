@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 import { getStandardUsers } from '@/actions/get-standard-users';
 
-import MeetingForm from './components/meeting-form';
+import MeetingForm from '../components/meeting-form';
 
 const MeetingPage = async ({ params }: { params: { sizeId: string } }) => {
   const standardUsers = await getStandardUsers();
