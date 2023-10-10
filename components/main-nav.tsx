@@ -32,6 +32,11 @@ const MainNav: React.FC<MainNavProps> = ({
       active: pathname === `/projects`,
     },
     {
+      href: `/meetings`,
+      label: 'Întâlniri',
+      active: pathname === `/meetings`,
+    },
+    {
       href: `/vacations`,
       label: 'Concedii',
       active: pathname === `/vacations`,

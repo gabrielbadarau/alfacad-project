@@ -22,7 +22,7 @@ const UpcomingMeetings: React.FC<UpcomingMeetingsProps> = ({ meetings }) => {
         onClick={() => router.push('/overview/meeting/new')}
       />
 
-      <div className='grid gap-4 md:grid-cols-2'>
+      <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3'>
         {meetings.map((meeting) => (
           <CardMeeting key={`${meeting.title}-${meeting.id}`} data={meeting} />
         ))}

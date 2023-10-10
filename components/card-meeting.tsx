@@ -28,6 +28,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import DeleteModal from '@/components/delete-modal';
 import UserBullet from '@/components/user-bullet';
+import Ribbon from '@/components/ribbon';
 import { Meeting } from '@/types/meeting';
 
 interface CardMeetingProps {
@@ -49,7 +50,8 @@ const CardMeeting: React.FC<CardMeetingProps> = ({ data }) => {
         onConfirm={() => {}}
       />
 
-      <Card className='min-w-[21rem]'>
+      <Card className='min-w-[21rem] relative'>
+        <Ribbon startDate={data.date} endDate={data.date} />
         <CardHeader className='flex flex-row items-center justify-between py-4'>
           <CardTitle className='truncate py-0.5'>{data.title}</CardTitle>
           <DropdownMenu>

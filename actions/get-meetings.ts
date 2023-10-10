@@ -31,7 +31,7 @@ export const getMeetings = async (
         orderBy: {
           date: 'asc',
         },
-        take: 4,
+        take: 3,
       });
     } else {
       meetings = await prismadb.meeting.findMany({
