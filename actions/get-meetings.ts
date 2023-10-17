@@ -44,9 +44,9 @@ export const getMeetings = async (
 
     return await Promise.all(
       meetings.map(async (meeting) => {
-        const usersId = meeting.users.split(',');
+        const deserializedUsersId = meeting.users.split(',');
 
-        const usersPromises = usersId.map(async (userId) => {
+        const usersPromises = deserializedUsersId.map(async (userId) => {
           const userData = await clerkClient.users.getUser(userId);
 
           return {

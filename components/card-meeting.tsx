@@ -9,11 +9,13 @@ import {
   ChevronRight,
   Pencil,
   Trash2,
-  MoreHorizontal,
   Users,
   PencilLine,
 } from 'lucide-react';
 import { useState } from 'react';
+import axios from 'axios';
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
@@ -38,8 +40,23 @@ interface CardMeetingProps {
 const CardMeeting: React.FC<CardMeetingProps> = ({ data }) => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const formatDate = format(data.date, 'd MMMM yyyy', { locale: ro });
+
+  const onDelete = async () => {
+    try {
+      setLoading(true);
+      await axios.delete(`/api/meeting/${data.id}`);
+      toast.success('Întâlnire ștearsă.');
+    } catch (error) {
+      toast.error('Ceva nu a mers bine.');
+    } finally {
+      setLoading(false);
+      setOpenDeleteModal(false);
+      router.refresh();
+    }
+  };
 
   return (
     <>
@@ -47,7 +64,7 @@ const CardMeeting: React.FC<CardMeetingProps> = ({ data }) => {
         isOpen={openDeleteModal}
         onClose={() => setOpenDeleteModal(false)}
         loading={loading}
-        onConfirm={() => {}}
+        onConfirm={onDelete}
       />
 
       <Card className='min-w-[21rem] relative'>
@@ -57,7 +74,7 @@ const CardMeeting: React.FC<CardMeetingProps> = ({ data }) => {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
-                variant='ghost'
+                variant='outline'
                 className='ml-2 flex h-8 w-12 p-0 data-[state=open]:bg-muted shrink-0 !mt-0'
               >
                 <ChevronRight className='shrink-0 h-5 w-5' />
@@ -66,14 +83,10 @@ const CardMeeting: React.FC<CardMeetingProps> = ({ data }) => {
             </DropdownMenuTrigger>
 
             <DropdownMenuContent className='w-[160px]'>
-              <DropdownMenuItem className='cursor-pointer'>
-                Detalii
-                <DropdownMenuShortcut>
-                  <MoreHorizontal className='h-4 w-4 shrink-0' />
-                </DropdownMenuShortcut>
-              </DropdownMenuItem>
-
-              <DropdownMenuItem className='cursor-pointer'>
+              <DropdownMenuItem
+                className='cursor-pointer'
+                onClick={() => router.push(`/meetings/${data.id}`)}
+              >
                 Editează
                 <DropdownMenuShortcut>
                   <Pencil className='h-4 w-4 shrink-0' />
@@ -118,7 +131,7 @@ const CardMeeting: React.FC<CardMeetingProps> = ({ data }) => {
           </div>
           <div className='flex flex-row gap-2'>
             <PencilLine className='shrink-0' />
-            <p>{data.address}</p>
+            <p>{data.description}</p>
           </div>
         </CardContent>
       </Card>

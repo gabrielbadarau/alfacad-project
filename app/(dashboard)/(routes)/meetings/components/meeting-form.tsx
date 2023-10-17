@@ -25,6 +25,7 @@ import MultiUserSelect from '@/components/multi-user-select';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { User } from '@/types/user';
+import { Meeting } from '@prisma/client';
 
 const formSchema = z.object({
   title: z.string().min(1, 'Acest câmp este obligatoriu.'),
@@ -53,13 +54,18 @@ const formSchema = z.object({
   description: z.string().min(1, 'Acest câmp este obligatoriu.'),
 });
 
+type MeetingWithArrayUsers = {
+  [K in keyof Meeting]: K extends 'users' ? string[] : Meeting[K];
+};
+
 interface MeetingFormProps {
-  // TODO replace any
-  initialData: any;
+  initialData: MeetingWithArrayUsers | null;
   users: User[];
 }
 
 const MeetingForm: React.FC<MeetingFormProps> = ({ initialData, users }) => {
+  // deserialize users in order for multi user component to work properly
+
   const params = useParams();
   const router = useRouter();
 
@@ -91,7 +97,7 @@ const MeetingForm: React.FC<MeetingFormProps> = ({ initialData, users }) => {
       await axios.post('/api/meeting', data);
 
       router.refresh();
-      router.push(`/overview`);
+      router.push(`/meetings`);
       toast.success('Intâlnire planificată.');
     } catch (error) {
       toast.error('Ceva nu a mers bine.');
@@ -145,7 +151,7 @@ const MeetingForm: React.FC<MeetingFormProps> = ({ initialData, users }) => {
                 control={form.control}
                 name='time'
                 render={({ field }) => (
-                  <FormItem className=''>
+                  <FormItem>
                     <FormLabel>Alege ora</FormLabel>
                     <FormControl>
                       <TimePicker

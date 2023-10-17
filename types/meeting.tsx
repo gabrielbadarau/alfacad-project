@@ -2,10 +2,10 @@ import { User } from '@/types/user';
 
 export interface Meeting {
   id: string;
-  title: string | null;
+  title: string;
   date: Date;
-  time: String;
+  time: string;
   users: User[];
-  address: string | null;
+  address: string;
   description: string;
 }
