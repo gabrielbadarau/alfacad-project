@@ -22,6 +22,7 @@ import { Textarea } from '@/components/ui/textarea';
 import DatePicker from '@/components/date-picker';
 import TimePicker from '@/components/time-picker';
 import MultiUserSelect from '@/components/multi-user-select';
+import DeleteModal from '@/components/delete-modal';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { User } from '@/types/user';
@@ -64,20 +65,18 @@ interface MeetingFormProps {
 }
 
 const MeetingForm: React.FC<MeetingFormProps> = ({ initialData, users }) => {
-  // deserialize users in order for multi user component to work properly
-
   const params = useParams();
   const router = useRouter();
 
-  const [open, setOpen] = useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const title = initialData
     ? 'Editează întâlnirea'
     : 'Creează o nouă întâlnire';
-  // const toastMessage = initialData
-  //   ? 'Billboard updated.'
-  //   : 'Billboard created.';
+  const toastMessage = initialData
+    ? 'Intâlnire modificată.'
+    : 'Intâlnire planificată.';
   const action = initialData ? 'Salvează modificările' : 'Creează';
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -94,11 +93,15 @@ const MeetingForm: React.FC<MeetingFormProps> = ({ initialData, users }) => {
     try {
       setLoading(true);
 
-      await axios.post('/api/meeting', data);
+      if (initialData) {
+        await axios.patch(`/api/meeting/${params.meetingId}`, data);
+      } else {
+        await axios.post(`/api/meetings`, data);
+      }
 
       router.refresh();
       router.push(`/meetings`);
-      toast.success('Intâlnire planificată.');
+      toast.success(toastMessage);
     } catch (error) {
       toast.error('Ceva nu a mers bine.');
     } finally {
@@ -107,8 +110,31 @@ const MeetingForm: React.FC<MeetingFormProps> = ({ initialData, users }) => {
     }
   };
 
+  const onDelete = async () => {
+    try {
+      setLoading(true);
+      await axios.delete(`/api/meeting/${params.meetingId}`);
+
+      router.push(`/meetings`);
+      router.refresh();
+      toast.success('Întâlnire ștearsă.');
+    } catch (error) {
+      toast.error('Ceva nu a mers bine.');
+    } finally {
+      setLoading(false);
+      setOpenDeleteModal(false);
+    }
+  };
+
   return (
     <>
+      <DeleteModal
+        isOpen={openDeleteModal}
+        onClose={() => setOpenDeleteModal(false)}
+        loading={loading}
+        onConfirm={onDelete}
+      />
+
       <Heading title={title} />
 
       <Form {...form}>
@@ -223,7 +249,16 @@ const MeetingForm: React.FC<MeetingFormProps> = ({ initialData, users }) => {
             />
           </div>
 
-          <div className='space-x-2 flex items-center justify-end w-full'>
+          <div className='space-y-3 sm:space-y-0 sm:space-x-3 flex flex-wrap items-center justify-end w-full'>
+            <Button
+              type='button'
+              variant='destructive'
+              className='sm:w-auto w-full'
+              onClick={() => setOpenDeleteModal(true)}
+              disabled={loading}
+            >
+              Șterge
+            </Button>
             <Button
               className='sm:w-auto w-full'
               disabled={loading}

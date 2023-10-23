@@ -33,13 +33,14 @@ const CardAbsence: React.FC<CardAbsenceProps> = ({ data }) => {
     try {
       setLoading(true);
       await axios.delete(`/api/vacation/${data.id}`);
+
+      router.refresh();
       toast.success('Concediu șters.');
     } catch (error) {
       toast.error('Ceva nu a mers bine.');
     } finally {
       setLoading(false);
       setOpenDeleteModal(false);
-      router.refresh();
     }
   };
 

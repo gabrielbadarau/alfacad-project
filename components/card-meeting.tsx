@@ -48,13 +48,14 @@ const CardMeeting: React.FC<CardMeetingProps> = ({ data }) => {
     try {
       setLoading(true);
       await axios.delete(`/api/meeting/${data.id}`);
+
+      router.refresh();
       toast.success('Întâlnire ștearsă.');
     } catch (error) {
       toast.error('Ceva nu a mers bine.');
     } finally {
       setLoading(false);
       setOpenDeleteModal(false);
-      router.refresh();
     }
   };
 
