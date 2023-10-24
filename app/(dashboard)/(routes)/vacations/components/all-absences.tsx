@@ -11,14 +11,21 @@ import { User } from '@/types/user';
 
 import CreateAbsenceModal from './create-absence-modal';
 import Filter from './filter';
+import Pagination from './pagination';
 
 interface AllAbsencesProps {
   vacations: Vacation[];
   users: User[];
+  totalAbsences: number;
 }
 
-const AllAbsences: React.FC<AllAbsencesProps> = ({ vacations, users }) => {
+const AllAbsences: React.FC<AllAbsencesProps> = ({
+  vacations,
+  users,
+  totalAbsences,
+}) => {
   const [isOpenCreateModal, setIsOpenCreateModal] = useState(false);
+  let [pageNumber, setPageNumber] = useState(1);
 
   return (
     <>
@@ -26,6 +33,7 @@ const AllAbsences: React.FC<AllAbsencesProps> = ({ vacations, users }) => {
         isOpen={isOpenCreateModal}
         onClose={() => setIsOpenCreateModal(false)}
       />
+
       <div className='flex sm:flex-row-reverse flex-wrap justify-between items-center'>
         <Button
           className='w-full mb-3 sm:w-auto sm:mb-0'
@@ -51,6 +59,8 @@ const AllAbsences: React.FC<AllAbsencesProps> = ({ vacations, users }) => {
           )}
         </CardContent>
       </Card>
+
+      <Pagination totalAbsences={totalAbsences} />
     </>
   );
 };

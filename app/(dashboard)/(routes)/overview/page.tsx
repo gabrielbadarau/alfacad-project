@@ -7,7 +7,7 @@ import UpcomingMeetings from './components/upcoming-meetings';
 export const revalidate = 0;
 
 const OverviewPage = async () => {
-  const vacations = await getVacations();
+  const { vacations } = await getVacations();
   const meetings = await getMeetings();
 
   return (

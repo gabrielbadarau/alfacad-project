@@ -27,7 +27,7 @@ const Filter: React.FC<FilterProps> = ({ users }) => {
   }, [searchParams]);
 
   const changeUrl = (e: string[]) => {
-    const query = { users: e };
+    const query = { users: e, page: null };
 
     const url = qs.stringifyUrl(
       {

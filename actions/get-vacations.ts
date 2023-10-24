@@ -1,17 +1,25 @@
 import prismadb from '@/lib/prismadb';
+import { Vacation } from '@/types/vacation';
 import { currentUser } from '@clerk/nextjs';
 import { clerkClient } from '@clerk/nextjs';
 
 export const getVacations = async (
   onlyUpcoming: boolean = true,
-  filteredUsers?: string[]
-) => {
+  filteredUsers?: string[],
+  page?: number
+): Promise<{ vacations: Vacation[]; totalDocuments: number }> => {
   try {
-    let usersVacations = [];
-    const user = await currentUser();
     const whereSearch = { userId: {} };
+    const take = 12;
+
+    const user = await currentUser();
+
     const currentDate = new Date();
     currentDate.setHours(0, 0, 0, 0);
+
+    let usersVacations = [];
+    let skip = 0;
+    let countDocuments = 0;
 
     if (!user) {
       throw new Error('Unauthorized');
@@ -22,6 +30,10 @@ export const getVacations = async (
         ? filteredUsers
         : [filteredUsers];
       whereSearch.userId = { in: users };
+    }
+
+    if (page) {
+      skip = take * (page - 1);
     }
 
     if (onlyUpcoming) {
@@ -38,6 +50,15 @@ export const getVacations = async (
       });
     } else {
       usersVacations = await prismadb.vacation.findMany({
+        skip,
+        take,
+        where: whereSearch,
+        orderBy: {
+          endDate: 'desc',
+        },
+      });
+
+      countDocuments = await prismadb.vacation.count({
         where: whereSearch,
         orderBy: {
           endDate: 'desc',
@@ -45,7 +66,7 @@ export const getVacations = async (
       });
     }
 
-    return await Promise.all(
+    const vacations = await Promise.all(
       usersVacations.map(async (userVacation) => {
         const userData = await clerkClient.users.getUser(userVacation.userId);
 
@@ -60,8 +81,14 @@ export const getVacations = async (
         };
       })
     );
+
+    if (onlyUpcoming) {
+      return { vacations, totalDocuments: 8 };
+    } else {
+      return { vacations, totalDocuments: countDocuments };
+    }
   } catch (error) {
     console.log('[VACATION_GET]', error);
-    return [];
+    return { vacations: [], totalDocuments: 0 };
   }
 };
