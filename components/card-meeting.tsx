@@ -68,7 +68,7 @@ const CardMeeting: React.FC<CardMeetingProps> = ({ data }) => {
         onConfirm={onDelete}
       />
 
-      <Card className='min-w-[21rem] relative'>
+      <Card className='min-w-[19rem] relative'>
         <Ribbon startDate={data.date} endDate={data.date} />
         <CardHeader className='flex flex-row items-center justify-between py-4'>
           <CardTitle className='truncate py-0.5'>{data.title}</CardTitle>
@@ -128,11 +128,11 @@ const CardMeeting: React.FC<CardMeetingProps> = ({ data }) => {
           </div>
           <div className='flex flex-row gap-2'>
             <MapPin className='shrink-0' />
-            <p className='tracking-tighter truncate'>{data.address}</p>
+            <p className='break-all'>{data.address}</p>
           </div>
           <div className='flex flex-row gap-2'>
             <PencilLine className='shrink-0' />
-            <p>{data.description}</p>
+            <p className='break-all'>{data.description}</p>
           </div>
         </CardContent>
       </Card>

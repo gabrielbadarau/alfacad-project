@@ -22,7 +22,7 @@ const SearchFilter = () => {
   }, [searchParams]);
 
   const changeUrl = (e: string) => {
-    const query = { search: e ? e : null };
+    const query = { search: e ? e : null, page: null };
 
     const url = qs.stringifyUrl(
       {

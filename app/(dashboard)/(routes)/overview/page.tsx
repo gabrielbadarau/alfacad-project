@@ -8,7 +8,7 @@ export const revalidate = 0;
 
 const OverviewPage = async () => {
   const { vacations } = await getVacations();
-  const meetings = await getMeetings();
+  const { meetings } = await getMeetings();
 
   return (
     <div className='space-y-4 p-8 pt-6'>

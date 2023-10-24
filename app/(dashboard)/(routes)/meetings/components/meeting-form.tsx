@@ -86,6 +86,7 @@ const MeetingForm: React.FC<MeetingFormProps> = ({ initialData, users }) => {
       description: '',
       address: '',
       users: [],
+      time: '',
     },
   });
 
@@ -96,11 +97,11 @@ const MeetingForm: React.FC<MeetingFormProps> = ({ initialData, users }) => {
       if (initialData) {
         await axios.patch(`/api/meeting/${params.meetingId}`, data);
       } else {
-        await axios.post(`/api/meetings`, data);
+        await axios.post(`/api/meeting`, data);
       }
 
-      router.refresh();
       router.push(`/meetings`);
+      router.refresh();
       toast.success(toastMessage);
     } catch (error) {
       toast.error('Ceva nu a mers bine.');
@@ -261,7 +262,7 @@ const MeetingForm: React.FC<MeetingFormProps> = ({ initialData, users }) => {
             </Button>
             <Button
               className='sm:w-auto w-full'
-              disabled={loading}
+              disabled={loading || !form.formState.isDirty}
               type='submit'
             >
               {action}

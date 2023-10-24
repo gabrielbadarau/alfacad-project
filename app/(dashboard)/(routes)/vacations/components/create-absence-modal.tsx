@@ -106,7 +106,7 @@ const CreateAbsenceModal: React.FC<CreateAbsenceModalProps> = ({
           <div className='space-x-2 flex items-center justify-end w-full'>
             <Button
               className='sm:w-auto w-full'
-              disabled={loading}
+              disabled={loading || !form.formState.isDirty}
               type='submit'
             >
               Creează

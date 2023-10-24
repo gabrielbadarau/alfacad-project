@@ -1,17 +1,25 @@
 import prismadb from '@/lib/prismadb';
+import { Meeting } from '@/types/meeting';
 import { currentUser } from '@clerk/nextjs';
 import { clerkClient } from '@clerk/nextjs';
 
 export const getMeetings = async (
   onlyUpcoming: boolean = true,
-  filteredSearch?: string
-) => {
+  filteredSearch?: string,
+  page?: number
+): Promise<{ meetings: Meeting[]; totalDocuments: number }> => {
   try {
-    let meetings = [];
-    const user = await currentUser();
     const whereSearch = { title: {} };
+    const take = 6;
+
     const currentDate = new Date();
     currentDate.setHours(0, 0, 0, 0);
+
+    const user = await currentUser();
+
+    let dashboardMeetings = [];
+    let skip = 0;
+    let countDocuments = 0;
 
     if (!user) {
       throw new Error('Unauthorized');
@@ -21,8 +29,12 @@ export const getMeetings = async (
       whereSearch.title = { contains: filteredSearch };
     }
 
+    if (page) {
+      skip = take * (page - 1);
+    }
+
     if (onlyUpcoming) {
-      meetings = await prismadb.meeting.findMany({
+      dashboardMeetings = await prismadb.meeting.findMany({
         where: {
           date: {
             gte: currentDate,
@@ -34,7 +46,16 @@ export const getMeetings = async (
         take: 3,
       });
     } else {
-      meetings = await prismadb.meeting.findMany({
+      dashboardMeetings = await prismadb.meeting.findMany({
+        skip,
+        take,
+        where: whereSearch,
+        orderBy: {
+          date: 'desc',
+        },
+      });
+
+      countDocuments = await prismadb.meeting.count({
         where: whereSearch,
         orderBy: {
           date: 'desc',
@@ -42,8 +63,8 @@ export const getMeetings = async (
       });
     }
 
-    return await Promise.all(
-      meetings.map(async (meeting) => {
+    const meetings = await Promise.all(
+      dashboardMeetings.map(async (meeting) => {
         const deserializedUsersId = meeting.users.split(',');
 
         const usersPromises = deserializedUsersId.map(async (userId) => {
@@ -71,8 +92,14 @@ export const getMeetings = async (
         };
       })
     );
+
+    if (onlyUpcoming) {
+      return { meetings, totalDocuments: 8 };
+    } else {
+      return { meetings, totalDocuments: countDocuments };
+    }
   } catch (error) {
     console.log('[MEETING_GET]', error);
-    return [];
+    return { meetings: [], totalDocuments: 0 };
   }
 };

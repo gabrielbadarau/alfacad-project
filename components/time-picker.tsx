@@ -65,7 +65,7 @@ const TimePicker: React.FC<TimePickerProps> = ({
         name='hour'
         disabled={disabled}
         onValueChange={handleHourChange}
-        defaultValue={time[0]}
+        defaultValue={time ? time[0] : undefined}
       >
         <FormControl className='w-[65px]'>
           <SelectTrigger>
@@ -87,7 +87,7 @@ const TimePicker: React.FC<TimePickerProps> = ({
         name='minutes'
         disabled={disabled}
         onValueChange={handleMinuteChange}
-        defaultValue={time[1]}
+        defaultValue={time ? time[1] : undefined}
       >
         <FormControl className='w-[65px]'>
           <SelectTrigger>

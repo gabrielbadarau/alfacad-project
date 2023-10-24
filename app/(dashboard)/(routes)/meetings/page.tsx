@@ -7,15 +7,20 @@ export const revalidate = 0;
 interface MeetingsPageProps {
   searchParams: {
     search: string;
+    page: number;
   };
 }
 
 const MeetingsPage: React.FC<MeetingsPageProps> = async ({ searchParams }) => {
-  const meetings = await getMeetings(false, searchParams.search);
+  const { meetings, totalDocuments } = await getMeetings(
+    false,
+    searchParams.search,
+    searchParams.page
+  );
 
   return (
     <div className='space-y-4 p-8 pt-6'>
-      <AllMeetings meetings={meetings} />
+      <AllMeetings meetings={meetings} totalMeetings={totalDocuments} />
     </div>
   );
 };
