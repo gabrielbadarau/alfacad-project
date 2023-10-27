@@ -251,15 +251,17 @@ const MeetingForm: React.FC<MeetingFormProps> = ({ initialData, users }) => {
           </div>
 
           <div className='space-y-3 sm:space-y-0 sm:space-x-3 flex flex-wrap items-center justify-end w-full'>
-            <Button
-              type='button'
-              variant='destructive'
-              className='sm:w-auto w-full'
-              onClick={() => setOpenDeleteModal(true)}
-              disabled={loading}
-            >
-              Șterge
-            </Button>
+            {initialData && (
+              <Button
+                type='button'
+                variant='destructive'
+                className='sm:w-auto w-full'
+                onClick={() => setOpenDeleteModal(true)}
+                disabled={loading}
+              >
+                Șterge
+              </Button>
+            )}
             <Button
               className='sm:w-auto w-full'
               disabled={loading || !form.formState.isDirty}
