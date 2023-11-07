@@ -3,9 +3,9 @@ import Image from 'next/image';
 import { getStandardUsers } from '@/actions/get-standard-users';
 import { getMeeting } from '@/actions/get-meeting';
 
-import MeetingForm from '../components/meeting-form';
+import ProjectForm from '../components/project-form';
 
-const MeetingPage = async ({ params }: { params: { meetingId: string } }) => {
+const ProjectPage = async ({ params }: { params: { meetingId: string } }) => {
   const standardUsers = await getStandardUsers();
 
   const meetingData = await getMeeting(params.meetingId);
@@ -13,20 +13,20 @@ const MeetingPage = async ({ params }: { params: { meetingId: string } }) => {
   return (
     <div className='flex flex-row gap-20 p-8 pt-6 h-full'>
       <div className='w-full space-y-4'>
-        <MeetingForm initialData={meetingData} users={standardUsers} />
+        <ProjectForm initialData={meetingData} users={standardUsers} />
       </div>
 
       <div className='hidden xl:block'>
         <Image
           priority
-          src='/meeting.svg'
+          src='/project.svg'
           height={1300}
           width={1300}
-          alt='Picture of two people shaking hands'
+          alt='Picture of a man launching a rocket'
         />
       </div>
     </div>
   );
 };
 
-export default MeetingPage;
+export default ProjectPage;

@@ -84,6 +84,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                 const isSelected = selectedValues.has(option.value);
                 return (
                   <CommandItem
+                    className='justify-between'
                     key={option.value}
                     onSelect={() => {
                       if (isSelected) {
@@ -107,10 +108,10 @@ export function DataTableFacetedFilter<TData, TValue>({
                     >
                       <Check className={cn('h-4 w-4')} />
                     </div>
+                    <span className='ml-2 w-full'>{option.label}</span>
                     {option.icon && (
-                      <option.icon className='mr-2 h-4 w-4 text-muted-foreground' />
+                      <option.icon className='ml-2 h-5 w-6 text-muted-foreground' />
                     )}
-                    <span>{option.label}</span>
                   </CommandItem>
                 );
               })}

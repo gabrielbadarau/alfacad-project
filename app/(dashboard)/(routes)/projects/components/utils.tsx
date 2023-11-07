@@ -7,50 +7,73 @@ import {
   XCircle,
   HelpCircle,
   Timer,
+  FileInput,
+  Ruler,
+  Compass,
+  DraftingCompass,
+  BookOpenText,
+  FileSearch2,
+  PackageCheck,
+  Hourglass,
 } from 'lucide-react';
 
-export const statuses = [
+export const projectStatuses = [
   {
-    value: 'backlog',
-    label: 'Backlog',
-    icon: HelpCircle,
+    value: 'CONTRACTAT',
+    label: 'Contractat',
+    icon: FileInput,
   },
   {
-    value: 'todo',
-    label: 'Todo',
-    icon: Circle,
+    value: 'MASURAT',
+    label: 'Măsurat',
+    icon: Ruler,
   },
   {
-    value: 'in progress',
-    label: 'In Progress',
-    icon: Timer,
+    value: 'PRELUCARE_MASURATORI',
+    label: 'Prelucare măsurători',
+    icon: DraftingCompass,
   },
   {
-    value: 'done',
-    label: 'Done',
-    icon: CheckCircle2,
+    value: 'INTOCMIRE_DOCUMENTATIE',
+    label: 'Întocmire documentație',
+    icon: BookOpenText,
   },
   {
-    value: 'canceled',
-    label: 'Canceled',
-    icon: XCircle,
+    value: 'VERIFICARE_DOCUMENTATIE',
+    label: 'Verificare documentație',
+    icon: FileSearch2,
+  },
+  {
+    value: 'DEPUS',
+    label: 'Depus',
+    icon: Hourglass,
+  },
+  {
+    value: 'AVIZAT_RESPINS',
+    label: 'Avizat / Respins',
+    icon: PackageCheck,
   },
 ];
 
-export const priorities = [
+export const projectTypes = [
   {
-    label: 'Low',
-    value: 'low',
-    icon: ArrowDown,
+    label: 'Intabulare teren / constructie',
+    value: 'INTABULARE_TEREN_CONSTRUCTIE',
   },
   {
-    label: 'Medium',
-    value: 'medium',
-    icon: ArrowRight,
+    label: 'Intabulare UI',
+    value: 'INTABULARE_UI',
   },
   {
-    label: 'High',
-    value: 'high',
-    icon: ArrowUp,
+    label: 'Dezmembrare / alipire',
+    value: 'DEZMEMBRARE_ALIPIRE',
+  },
+  {
+    label: 'Apartamentare',
+    value: 'APARTAMENTARE',
+  },
+  {
+    label: 'Ridicare',
+    value: 'RIDICARE',
   },
 ];

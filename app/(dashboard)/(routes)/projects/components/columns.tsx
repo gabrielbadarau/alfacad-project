@@ -5,7 +5,7 @@ import { FolderPlus } from 'lucide-react';
 import { ColumnDef } from '@tanstack/react-table';
 import { Button } from '@/components/ui/button';
 
-import { statuses } from './utils';
+import { projectStatuses } from './utils';
 import { DataTableRowActions } from './data-table-row-actions';
 
 export type Task = {
@@ -30,7 +30,7 @@ export const columns: ColumnDef<Task>[] = [
     accessorKey: 'status',
     header: 'Status',
     cell: ({ row }) => {
-      const status = statuses.find(
+      const status = projectStatuses.find(
         (status) => status.value === row.getValue('status')
       );
 
@@ -52,7 +52,7 @@ export const columns: ColumnDef<Task>[] = [
   {
     header: () => (
       <div className='text-right'>
-        <Button variant='outline' className='h-8 p-2 lg:p-3 '>
+        <Button className='h-8 p-2 lg:p-3 '>
           <FolderPlus className='h-4 w-4 shrink-0' />
         </Button>
       </div>
