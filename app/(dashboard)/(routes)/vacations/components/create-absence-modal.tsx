@@ -66,6 +66,7 @@ const CreateAbsenceModal: React.FC<CreateAbsenceModalProps> = ({
 
       await axios.post('/api/vacation', data);
 
+      form.reset();
       toast.success('Concediu planificat.');
       onClose();
       router.refresh();
@@ -73,7 +74,6 @@ const CreateAbsenceModal: React.FC<CreateAbsenceModalProps> = ({
       toast.error('Ceva nu a mers bine.');
     } finally {
       setLoading(false);
-      form.reset();
     }
   };
 

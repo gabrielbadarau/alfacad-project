@@ -57,7 +57,7 @@ export const projectStatuses = [
 
 export const projectTypes = [
   {
-    label: 'Intabulare teren / constructie',
+    label: 'Intabulare teren / Constructie',
     value: 'INTABULARE_TEREN_CONSTRUCTIE',
   },
   {
@@ -65,7 +65,7 @@ export const projectTypes = [
     value: 'INTABULARE_UI',
   },
   {
-    label: 'Dezmembrare / alipire',
+    label: 'Dezmembrare / Alipire',
     value: 'DEZMEMBRARE_ALIPIRE',
   },
   {

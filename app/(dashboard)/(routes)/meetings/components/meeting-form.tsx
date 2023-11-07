@@ -100,6 +100,7 @@ const MeetingForm: React.FC<MeetingFormProps> = ({ initialData, users }) => {
         await axios.post(`/api/meeting`, data);
       }
 
+      form.reset();
       router.push(`/meetings`);
       router.refresh();
       toast.success(toastMessage);
@@ -107,7 +108,6 @@ const MeetingForm: React.FC<MeetingFormProps> = ({ initialData, users }) => {
       toast.error('Ceva nu a mers bine.');
     } finally {
       setLoading(false);
-      form.reset();
     }
   };
 

@@ -12,7 +12,17 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
-import { navigationMenuTriggerStyle } from '@/components/ui/navigation-menu';
+import {
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetFooter,
+  SheetClose,
+} from '@/components/ui/sheet';
+import { Button } from '@/components/ui/button';
 
 import { cn } from '@/lib/utils';
 
@@ -66,38 +76,14 @@ const MainNav: React.FC<MainNavProps> = ({
       )}
       {...props}
     >
-      <Image src={logo} alt='Logo' priority width={80} height={54} />
-
-      <NavigationMenu className='sm:hidden'>
-        <NavigationMenuList>
-          <NavigationMenuItem>
-            <NavigationMenuTrigger className='text-slate-900 tracking-wide'>
-              <MenuSquare className='shrink-0 h-6 w-6' />
-            </NavigationMenuTrigger>
-            <NavigationMenuContent>
-              {routes.map((route) => (
-                <Link
-                  key={route.href}
-                  href={route.href}
-                  legacyBehavior
-                  passHref
-                >
-                  <NavigationMenuLink
-                    className={cn(
-                      navigationMenuTriggerStyle(),
-                      route.active
-                        ? 'text-slate-900 dark:text-white tracking-wide font-bold'
-                        : 'text-muted-foreground'
-                    )}
-                  >
-                    {route.label}
-                  </NavigationMenuLink>
-                </Link>
-              ))}
-            </NavigationMenuContent>
-          </NavigationMenuItem>
-        </NavigationMenuList>
-      </NavigationMenu>
+      <Image
+        className='hidden sm:inline'
+        src={logo}
+        alt='Logo'
+        priority
+        width={80}
+        height={54}
+      />
 
       {routes.map((route) => (
         <Link
@@ -106,13 +92,49 @@ const MainNav: React.FC<MainNavProps> = ({
           className={cn(
             'hidden sm:inline text-sm font-medium transition-colors hover:text-primary',
             route.active
-              ? 'text-slate-900 dark:text-white tracking-wide'
+              ? 'text-slate-900 dark:text-white tracking-wide font-semibold'
               : 'text-muted-foreground'
           )}
         >
           {route.label}
         </Link>
       ))}
+
+      <Sheet>
+        <SheetTrigger className='sm:hidden' asChild>
+          <Button variant='outline'>
+            <MenuSquare className='shrink-0 h-6 w-6' />
+          </Button>
+        </SheetTrigger>
+        <SheetContent side='left' className='w-[280px]'>
+          <SheetHeader>
+            <SheetTitle className='flex justify-center'>
+              <Image src={logo} alt='Logo' priority width={120} height={120} />
+            </SheetTitle>
+          </SheetHeader>
+
+          <SheetDescription className='flex flex-col flex-nowrap gap-4 mt-16'>
+            {routes.map((route) => (
+              <Link
+                key={route.href}
+                href={route.href}
+                className={cn(
+                  'w-full text-sm font-medium transition-colors hover:text-primary'
+                )}
+              >
+                <SheetClose asChild>
+                  <Button
+                    variant={route.active ? 'default' : 'outline'}
+                    className='w-full'
+                  >
+                    {route.label}
+                  </Button>
+                </SheetClose>
+              </Link>
+            ))}
+          </SheetDescription>
+        </SheetContent>
+      </Sheet>
     </nav>
   );
 };

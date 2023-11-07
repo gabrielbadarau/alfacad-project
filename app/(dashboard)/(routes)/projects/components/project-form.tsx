@@ -19,20 +19,25 @@ import {
 } from '@/components/ui/form';
 import { Heading } from '@/components/heading';
 import { Textarea } from '@/components/ui/textarea';
-import DatePicker from '@/components/date-picker';
-import TimePicker from '@/components/time-picker';
-import MultiUserSelect from '@/components/multi-user-select';
+
 import DeleteModal from '@/components/delete-modal';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { User } from '@/types/user';
 import { Meeting } from '@prisma/client';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { projectStatuses, projectTypes } from './utils';
 
 const formSchema = z.object({
   name: z.string().min(1, 'Acest câmp este obligatoriu.'),
-  date: z.date({ required_error: 'Acest câmp este obligatoriu.' }),
-  address: z.string().min(1, 'Acest câmp este obligatoriu.'),
-  description: z.string().min(1, 'Acest câmp este obligatoriu.'),
+  type: z.string({ required_error: 'Acest câmp este obligatoriu.' }),
+  status: z.string({ required_error: 'Acest câmp este obligatoriu.' }),
 });
 
 type MeetingWithArrayUsers = {
@@ -59,8 +64,8 @@ const ProjectForm: React.FC<MeetingFormProps> = ({ initialData, users }) => {
     resolver: zodResolver(formSchema),
     defaultValues: initialData || {
       name: '',
-      description: '',
-      address: '',
+      type: undefined,
+      status: undefined,
     },
   });
 
@@ -74,6 +79,7 @@ const ProjectForm: React.FC<MeetingFormProps> = ({ initialData, users }) => {
         await axios.post(`/api/meeting`, data);
       }
 
+      form.reset();
       router.push(`/meetings`);
       router.refresh();
       toast.success(toastMessage);
@@ -81,7 +87,6 @@ const ProjectForm: React.FC<MeetingFormProps> = ({ initialData, users }) => {
       toast.error('Ceva nu a mers bine.');
     } finally {
       setLoading(false);
-      form.reset();
     }
   };
 
@@ -131,17 +136,30 @@ const ProjectForm: React.FC<MeetingFormProps> = ({ initialData, users }) => {
 
             <FormField
               control={form.control}
-              name='address'
+              name='type'
               render={({ field }) => (
                 <FormItem className='grid gap-1'>
-                  <FormLabel>Locul întâlnirii</FormLabel>
-                  <FormControl>
-                    <Input
-                      autoComplete='address'
-                      disabled={loading}
-                      {...field}
-                    />
-                  </FormControl>
+                  <FormLabel>Tip lucrare</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder='Selectează tipul lucrării' />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {projectTypes.map((projectType) => (
+                        <SelectItem
+                          key={projectType.value}
+                          value={projectType.value}
+                        >
+                          {projectType.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
@@ -149,17 +167,31 @@ const ProjectForm: React.FC<MeetingFormProps> = ({ initialData, users }) => {
 
             <FormField
               control={form.control}
-              name='description'
+              name='status'
               render={({ field }) => (
                 <FormItem className='grid gap-1'>
-                  <FormLabel>Descriere</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      className='h-[120px]'
-                      disabled={loading}
-                      {...field}
-                    />
-                  </FormControl>
+                  <FormLabel>Status</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder='Selectează statusul lucrării' />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {projectStatuses.map((projectStatus) => (
+                        <SelectItem
+                          className='flex flex-row'
+                          key={projectStatus.value}
+                          value={projectStatus.value}
+                        >
+                          {projectStatus.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
