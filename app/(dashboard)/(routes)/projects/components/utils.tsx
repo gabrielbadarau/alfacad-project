@@ -1,20 +1,12 @@
 import {
-  ArrowDown,
-  ArrowRight,
-  ArrowUp,
-  CheckCircle2,
-  Circle,
-  XCircle,
-  HelpCircle,
-  Timer,
   FileInput,
   Ruler,
-  Compass,
   DraftingCompass,
   BookOpenText,
   FileSearch2,
   PackageCheck,
   Hourglass,
+  PackageX,
 } from 'lucide-react';
 
 export const projectStatuses = [
@@ -49,9 +41,14 @@ export const projectStatuses = [
     icon: Hourglass,
   },
   {
-    value: 'AVIZAT_RESPINS',
-    label: 'Avizat / Respins',
+    value: 'AVIZAT',
+    label: 'Avizat',
     icon: PackageCheck,
+  },
+  {
+    value: 'RESPINS',
+    label: 'Respins',
+    icon: PackageX,
   },
 ];
 

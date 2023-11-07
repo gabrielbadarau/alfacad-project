@@ -1,12 +1,10 @@
 'use client';
 
-import { FolderPlus } from 'lucide-react';
-
 import { ColumnDef } from '@tanstack/react-table';
-import { Button } from '@/components/ui/button';
 
 import { projectStatuses } from './utils';
 import { DataTableRowActions } from './data-table-row-actions';
+import NewProjectButton from './new-project-button';
 
 export type Task = {
   id: string;
@@ -18,11 +16,11 @@ export type Task = {
 
 export const columns: ColumnDef<Task>[] = [
   {
-    accessorKey: 'title',
-    header: 'Title',
+    accessorKey: 'name',
+    header: 'Nume',
     cell: ({ row }) => (
       <div className='flex space-x-2'>
-        <span className='font-medium'>{row.getValue('title')}</span>
+        <span className='font-medium'>{row.getValue('name')}</span>
       </div>
     ),
   },
@@ -50,13 +48,7 @@ export const columns: ColumnDef<Task>[] = [
     },
   },
   {
-    header: () => (
-      <div className='text-right'>
-        <Button className='h-8 p-2 lg:p-3 '>
-          <FolderPlus className='h-4 w-4 shrink-0' />
-        </Button>
-      </div>
-    ),
+    header: NewProjectButton,
     id: 'actions',
     cell: ({ row }) => (
       <div className='flex justify-end'>

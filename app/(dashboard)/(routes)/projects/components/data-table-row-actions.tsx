@@ -1,6 +1,8 @@
 'use client';
 
 import { MoreHorizontal, Trash2, Pencil, Copy } from 'lucide-react';
+import { toast } from 'react-hot-toast';
+import { usePathname } from 'next/navigation';
 
 import { Row } from '@tanstack/react-table';
 import { Button } from '@/components/ui/button';
@@ -20,6 +22,13 @@ interface DataTableRowActionsProps<TData> {
 export function DataTableRowActions<TData>({
   row,
 }: DataTableRowActionsProps<TData>) {
+  const pathname = usePathname();
+  console.log(pathname)
+  const onCopy = (id: string) => {
+    navigator.clipboard.writeText(``);
+    toast.success('Category ID copied to clipboard.');
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -40,8 +49,8 @@ export function DataTableRowActions<TData>({
           </DropdownMenuShortcut>
         </DropdownMenuItem>
 
-        <DropdownMenuItem>
-          Copy link
+        <DropdownMenuItem onClick={() => onCopy(row.id)}>
+          Copiază linkul
           <DropdownMenuShortcut>
             <Copy className='h-4 w-4 shrink-0' />
           </DropdownMenuShortcut>
