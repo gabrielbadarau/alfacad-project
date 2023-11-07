@@ -1,4 +1,4 @@
-import { DataTable } from './components/data-table';
+import DataTable from './components/data-table';
 import { columns } from './components/columns';
 import { mockData } from './components/mockData';
 

@@ -1,15 +1,16 @@
 'use client';
 
 import { ColumnDef } from '@tanstack/react-table';
+import Client from '@/components/client';
 
 import { projectStatuses } from './utils';
-import { DataTableRowActions } from './data-table-row-actions';
+import DataTableRowActions from './data-table-row-actions';
 import NewProjectButton from './new-project-button';
 
 export type Task = {
   id: string;
-  title: string;
-  status: 'in progress' | 'backlog' | 'todo' | 'canceled' | 'done';
+  name: string;
+  status: string;
   label: string;
   priority: string;
 };
@@ -52,7 +53,9 @@ export const columns: ColumnDef<Task>[] = [
     id: 'actions',
     cell: ({ row }) => (
       <div className='flex justify-end'>
-        <DataTableRowActions row={row} />
+        <Client>
+          <DataTableRowActions row={row} />
+        </Client>
       </div>
     ),
   },
