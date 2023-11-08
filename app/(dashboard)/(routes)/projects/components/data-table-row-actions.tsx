@@ -68,7 +68,7 @@ const DataTableRowActions: React.FC<DataTableRowActionsProps> = ({ row }) => {
       </DropdownMenuTrigger>
 
       <DropdownMenuContent className='w-[160px]'>
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={() => router.push(`/projects/${row.id}`)}>
           Edit
           <DropdownMenuShortcut>
             <Pencil className='h-4 w-4 shrink-0' />
