@@ -41,7 +41,7 @@ const DataTableRowActions: React.FC<DataTableRowActionsProps> = ({ row }) => {
       await axios.delete(`/api/vacation/${row.id}`);
 
       router.refresh();
-      toast.success('Concediu șters.');
+      toast.success('Proiect șters.');
     } catch (error) {
       toast.error('Ceva nu a mers bine.');
     } finally {

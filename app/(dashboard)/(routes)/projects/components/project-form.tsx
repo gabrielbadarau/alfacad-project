@@ -56,7 +56,6 @@ const ProjectForm: React.FC<MeetingFormProps> = ({ initialData, users }) => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const title = initialData ? 'Editează proiectul' : 'Creează un proiect nou';
   const toastMessage = initialData ? 'Proiect modificat.' : 'Proiect creat.';
   const action = initialData ? 'Salvează modificările' : 'Creează';
 
@@ -114,8 +113,6 @@ const ProjectForm: React.FC<MeetingFormProps> = ({ initialData, users }) => {
         loading={loading}
         onConfirm={onDelete}
       />
-
-      <Heading title={title} />
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
