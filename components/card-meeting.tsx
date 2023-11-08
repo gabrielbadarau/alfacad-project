@@ -39,6 +39,7 @@ interface CardMeetingProps {
 
 const CardMeeting: React.FC<CardMeetingProps> = ({ data }) => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [openDropdownMenu, setOpenDropdownMenu] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -56,87 +57,95 @@ const CardMeeting: React.FC<CardMeetingProps> = ({ data }) => {
     } finally {
       setLoading(false);
       setOpenDeleteModal(false);
+      setOpenDropdownMenu(false);
     }
   };
 
   return (
-    <>
-      <DeleteModal
-        isOpen={openDeleteModal}
-        onClose={() => setOpenDeleteModal(false)}
-        loading={loading}
-        onConfirm={onDelete}
-      />
+    <Card className='min-w-[19rem] relative'>
+      <Ribbon startDate={data.date} endDate={data.date} />
+      <CardHeader className='flex flex-row items-center justify-between py-4'>
+        <CardTitle className='truncate py-0.5'>{data.title}</CardTitle>
 
-      <Card className='min-w-[19rem] relative'>
-        <Ribbon startDate={data.date} endDate={data.date} />
-        <CardHeader className='flex flex-row items-center justify-between py-4'>
-          <CardTitle className='truncate py-0.5'>{data.title}</CardTitle>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant='outline'
-                className='ml-2 flex h-8 w-12 p-0 data-[state=open]:bg-muted shrink-0 !mt-0'
-              >
-                <ChevronRight className='shrink-0 h-5 w-5' />
-                <span className='sr-only'>Open menu</span>
-              </Button>
-            </DropdownMenuTrigger>
+        <DropdownMenu
+          modal={false}
+          open={openDropdownMenu}
+          onOpenChange={(isOpen) => setOpenDropdownMenu(isOpen)}
+        >
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant='outline'
+              className='ml-2 flex h-8 w-12 p-0 data-[state=open]:bg-muted shrink-0 !mt-0'
+            >
+              <ChevronRight className='shrink-0 h-5 w-5' />
+              <span className='sr-only'>Open menu</span>
+            </Button>
+          </DropdownMenuTrigger>
 
-            <DropdownMenuContent className='w-[160px]'>
-              <DropdownMenuItem
-                className='cursor-pointer'
-                onClick={() => router.push(`/meetings/${data.id}`)}
-              >
-                Editează
-                <DropdownMenuShortcut>
-                  <Pencil className='h-4 w-4 shrink-0' />
-                </DropdownMenuShortcut>
-              </DropdownMenuItem>
+          <DropdownMenuContent className='w-[160px]'>
+            <DropdownMenuItem
+              className='cursor-pointer'
+              onClick={() => router.push(`/meetings/${data.id}`)}
+            >
+              Editează
+              <DropdownMenuShortcut>
+                <Pencil className='h-4 w-4 shrink-0' />
+              </DropdownMenuShortcut>
+            </DropdownMenuItem>
 
-              <DropdownMenuSeparator />
+            <DropdownMenuSeparator />
 
-              <DropdownMenuItem
-                onClick={() => setOpenDeleteModal(true)}
-                className='text-red-600 hover:text-red-600 cursor-pointer'
-              >
-                Șterge
-                <DropdownMenuShortcut>
-                  <Trash2 className='h-4 w-4 shrink-0' />
-                </DropdownMenuShortcut>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </CardHeader>
+            <DropdownMenuItem
+              onSelect={(e) => e.preventDefault()}
+              onClick={() => setOpenDeleteModal(true)}
+              className='text-red-600 hover:text-red-600 cursor-pointer'
+            >
+              Șterge
+              <DropdownMenuShortcut>
+                <Trash2 className='h-4 w-4 shrink-0' />
+              </DropdownMenuShortcut>
+            </DropdownMenuItem>
 
-        <Separator />
+            <DeleteModal
+              isOpen={openDeleteModal}
+              onClose={() => {
+                setOpenDeleteModal(false);
+                setOpenDropdownMenu(false);
+              }}
+              loading={loading}
+              onConfirm={onDelete}
+            />
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </CardHeader>
 
-        <CardContent className='py-4 flex flex-col gap-2'>
-          <div className='flex flex-row gap-2'>
-            <Calendar className='shrink-0' />
-            <p className='tracking-tighter'>{formatDate}</p>
-          </div>
-          <div className='flex flex-row gap-2'>
-            <Clock className='shrink-0' />
-            <p className='tracking-tighter'>{data.time}</p>
-          </div>
-          <div className='flex flex-row gap-2'>
-            <Users className='shrink-0' />
-            {data.users.map((user) => (
-              <UserBullet key={user.id} user={user} />
-            ))}
-          </div>
-          <div className='flex flex-row gap-2'>
-            <MapPin className='shrink-0' />
-            <p className='break-all'>{data.address}</p>
-          </div>
-          <div className='flex flex-row gap-2'>
-            <PencilLine className='shrink-0' />
-            <p className='break-all'>{data.description}</p>
-          </div>
-        </CardContent>
-      </Card>
-    </>
+      <Separator />
+
+      <CardContent className='py-4 flex flex-col gap-2'>
+        <div className='flex flex-row gap-2'>
+          <Calendar className='shrink-0' />
+          <p className='tracking-tighter'>{formatDate}</p>
+        </div>
+        <div className='flex flex-row gap-2'>
+          <Clock className='shrink-0' />
+          <p className='tracking-tighter'>{data.time}</p>
+        </div>
+        <div className='flex flex-row gap-2'>
+          <Users className='shrink-0' />
+          {data.users.map((user) => (
+            <UserBullet key={user.id} user={user} />
+          ))}
+        </div>
+        <div className='flex flex-row gap-2'>
+          <MapPin className='shrink-0' />
+          <p className='break-all'>{data.address}</p>
+        </div>
+        <div className='flex flex-row gap-2'>
+          <PencilLine className='shrink-0' />
+          <p className='break-all'>{data.description}</p>
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 

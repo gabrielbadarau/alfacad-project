@@ -27,6 +27,7 @@ interface DataTableRowActionsProps {
 const DataTableRowActions: React.FC<DataTableRowActionsProps> = ({ row }) => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [openDropdownMenu, setOpenDropdownMenu] = useState(false);
   const router = useRouter();
 
   const onCopy = (id: string) => {
@@ -46,57 +47,64 @@ const DataTableRowActions: React.FC<DataTableRowActionsProps> = ({ row }) => {
     } finally {
       setLoading(false);
       setOpenDeleteModal(false);
+      setOpenDropdownMenu(false);
     }
   };
 
   return (
-    <>
-      <DeleteModal
-        isOpen={openDeleteModal}
-        onClose={() => setOpenDeleteModal(false)}
-        loading={loading}
-        onConfirm={onDelete}
-      />
+    <DropdownMenu
+      modal={false}
+      open={openDropdownMenu}
+      onOpenChange={(isOpen) => setOpenDropdownMenu(isOpen)}
+    >
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant='ghost'
+          className='flex h-8 w-8 p-0 data-[state=open]:bg-muted'
+        >
+          <MoreHorizontal />
+          <span className='sr-only'>Open menu</span>
+        </Button>
+      </DropdownMenuTrigger>
 
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant='ghost'
-            className='flex h-8 w-8 p-0 data-[state=open]:bg-muted'
-          >
-            <MoreHorizontal />
-            <span className='sr-only'>Open menu</span>
-          </Button>
-        </DropdownMenuTrigger>
+      <DropdownMenuContent className='w-[160px]'>
+        <DropdownMenuItem>
+          Edit
+          <DropdownMenuShortcut>
+            <Pencil className='h-4 w-4 shrink-0' />
+          </DropdownMenuShortcut>
+        </DropdownMenuItem>
 
-        <DropdownMenuContent className='w-[160px]'>
-          <DropdownMenuItem>
-            Edit
-            <DropdownMenuShortcut>
-              <Pencil className='h-4 w-4 shrink-0' />
-            </DropdownMenuShortcut>
-          </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => onCopy(row.id)}>
+          Copiază linkul
+          <DropdownMenuShortcut>
+            <Copy className='h-4 w-4 shrink-0' />
+          </DropdownMenuShortcut>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
 
-          <DropdownMenuItem onClick={() => onCopy(row.id)}>
-            Copiază linkul
-            <DropdownMenuShortcut>
-              <Copy className='h-4 w-4 shrink-0' />
-            </DropdownMenuShortcut>
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
+        <DropdownMenuItem
+          onSelect={(e) => e.preventDefault()}
+          onClick={() => setOpenDeleteModal(true)}
+          className='text-red-600 hover:text-red-600'
+        >
+          Delete
+          <DropdownMenuShortcut>
+            <Trash2 className='h-4 w-4 shrink-0' />
+          </DropdownMenuShortcut>
+        </DropdownMenuItem>
 
-          <DropdownMenuItem
-            onClick={() => setOpenDeleteModal(true)}
-            className='text-red-600 hover:text-red-600'
-          >
-            Delete
-            <DropdownMenuShortcut>
-              <Trash2 className='h-4 w-4 shrink-0' />
-            </DropdownMenuShortcut>
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </>
+        <DeleteModal
+          isOpen={openDeleteModal}
+          onClose={() => {
+            setOpenDeleteModal(false);
+            setOpenDropdownMenu(false);
+          }}
+          loading={loading}
+          onConfirm={onDelete}
+        />
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 
