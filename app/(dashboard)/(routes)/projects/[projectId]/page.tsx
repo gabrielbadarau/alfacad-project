@@ -4,24 +4,22 @@ import { getStandardUsers } from '@/actions/get-standard-users';
 import { getMeeting } from '@/actions/get-meeting';
 import { cn } from '@/lib/utils';
 
-import ProjectForm from '../components/project-form';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+
+import ProjectForm from '../components/project-form';
+import ProjectComments from '../components/project-comments';
 
 const ProjectPage = async ({ params }: { params: { meetingId: string } }) => {
   console.log('server');
   const standardUsers = await getStandardUsers();
-  const meetingData = await getMeeting(params.meetingId);
+  const meetingData = (await getMeeting(params.meetingId)) || [2, 3];
   const title = meetingData ? 'Editează proiectul' : 'Creează un proiect nou';
   const description = meetingData
     ? 'Editează informațiile pe care dorești sa le modifici si apoi salvează modificările'
@@ -62,18 +60,8 @@ const ProjectPage = async ({ params }: { params: { meetingId: string } }) => {
                 </CardDescription>
               </CardHeader>
               <CardContent className='space-y-2'>
-                <div className='space-y-1'>
-                  <Label htmlFor='current'>Current password</Label>
-                  <Input id='current' type='password' />
-                </div>
-                <div className='space-y-1'>
-                  <Label htmlFor='new'>New password</Label>
-                  <Input id='new' type='password' />
-                </div>
+                <ProjectComments />
               </CardContent>
-              <CardFooter>
-                <Button>Save password</Button>
-              </CardFooter>
             </Card>
           </TabsContent>
         </Tabs>

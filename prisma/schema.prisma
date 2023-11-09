@@ -28,4 +28,6 @@ model Meeting {
   users       String
   address     String
   description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

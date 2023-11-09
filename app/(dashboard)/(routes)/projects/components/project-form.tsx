@@ -17,9 +17,6 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Heading } from '@/components/heading';
-import { Textarea } from '@/components/ui/textarea';
-
 import DeleteModal from '@/components/delete-modal';
 
 import { zodResolver } from '@hookform/resolvers/zod';
