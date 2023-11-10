@@ -53,7 +53,7 @@ const ProjectForm: React.FC<MeetingFormProps> = ({ initialData, users }) => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const toastMessage = initialData ? 'Proiect modificat.' : 'Proiect creat.';
+  const toastMessage = initialData ? 'Lucrare modificată.' : 'Lucrare creată.';
   const action = initialData ? 'Salvează modificările' : 'Creează';
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -72,11 +72,11 @@ const ProjectForm: React.FC<MeetingFormProps> = ({ initialData, users }) => {
       if (initialData) {
         await axios.patch(`/api/meeting/${params.meetingId}`, data);
       } else {
-        await axios.post(`/api/meeting`, data);
+        await axios.post(`/api/project`, data);
       }
 
       form.reset();
-      router.push(`/meetings`);
+      router.push(`/projects`);
       router.refresh();
       toast.success(toastMessage);
     } catch (error) {

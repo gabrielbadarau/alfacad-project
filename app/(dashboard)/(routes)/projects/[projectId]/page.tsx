@@ -19,8 +19,8 @@ import ProjectComments from '../components/project-comments';
 const ProjectPage = async ({ params }: { params: { meetingId: string } }) => {
   console.log('server');
   const standardUsers = await getStandardUsers();
-  const meetingData = (await getMeeting(params.meetingId)) || [2, 3];
-  const title = meetingData ? 'Editează proiectul' : 'Creează un proiect nou';
+  const meetingData = await getMeeting(params.meetingId);
+  const title = meetingData ? 'Editează lucrarea' : 'Creează o lucrare nouă';
   const description = meetingData
     ? 'Editează informațiile pe care dorești sa le modifici si apoi salvează modificările'
     : 'Introdu informațiile de bază si apoi creează';
@@ -56,7 +56,7 @@ const ProjectPage = async ({ params }: { params: { meetingId: string } }) => {
               <CardHeader>
                 <CardTitle>Istoric</CardTitle>
                 <CardDescription>
-                  Postează detalii referitoare la acest proiect
+                  Postează detalii referitoare la acestă lucrare
                 </CardDescription>
               </CardHeader>
               <CardContent className='space-y-2'>

@@ -32,7 +32,7 @@ const DataTableRowActions: React.FC<DataTableRowActionsProps> = ({ row }) => {
 
   const onCopy = (id: string) => {
     navigator.clipboard.writeText(`${window.location.href}/${id}`);
-    toast.success('Link-ul către proiect a fost copiat.');
+    toast.success('Link-ul către lucrare a fost copiat.');
   };
 
   const onDelete = async () => {
@@ -41,7 +41,7 @@ const DataTableRowActions: React.FC<DataTableRowActionsProps> = ({ row }) => {
       await axios.delete(`/api/vacation/${row.id}`);
 
       router.refresh();
-      toast.success('Proiect șters.');
+      toast.success('Lucrare ștearsă.');
     } catch (error) {
       toast.error('Ceva nu a mers bine.');
     } finally {

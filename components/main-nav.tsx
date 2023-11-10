@@ -49,7 +49,7 @@ const MainNav: React.FC<MainNavProps> = ({
     },
     {
       href: `/projects`,
-      label: 'Proiecte',
+      label: 'Lucrări',
       active: pathname.startsWith(`/projects`),
     },
     {
