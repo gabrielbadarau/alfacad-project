@@ -43,6 +43,11 @@ const TimePicker: React.FC<TimePickerProps> = ({
   const hour = useRef('');
   const minute = useRef('');
 
+  if (time) {
+    hour.current = time[0];
+    minute.current = time[1];
+  }
+
   const handleHourChange = (newValue: string) => {
     hour.current = newValue;
 

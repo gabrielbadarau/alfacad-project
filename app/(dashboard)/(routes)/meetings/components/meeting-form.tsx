@@ -36,14 +36,14 @@ const formSchema = z.object({
     .superRefine((value, ctx) => {
       const time = value.split(':');
 
-      if (!time[0]) {
+      if (!time[0] || time[0] === 'undefined') {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           message: 'Te rugăm să selectezi ora.',
         });
       }
 
-      if (!time[1]) {
+      if (!time[1] || time[1] === 'undefined') {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           message: 'Te rugăm să selectezi minutele.',
