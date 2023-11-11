@@ -64,7 +64,7 @@ export async function PATCH(
 
     const serializedUsers = users.join(',');
 
-    const store = await prismadb.meeting.update({
+    const meeting = await prismadb.meeting.update({
       where: {
         id: params.meetingId,
       },
@@ -78,7 +78,7 @@ export async function PATCH(
       },
     });
 
-    return NextResponse.json(store);
+    return NextResponse.json(meeting);
   } catch (error) {
     console.log('[MEETING_PATCH]', error);
     return new NextResponse('Internal error', { status: 500 });
@@ -105,13 +105,13 @@ export async function DELETE(
       return new NextResponse('MeetingId is required', { status: 400 });
     }
 
-    const store = await prismadb.meeting.delete({
+    const meeting = await prismadb.meeting.delete({
       where: {
         id: params.meetingId,
       },
     });
 
-    return NextResponse.json(store);
+    return NextResponse.json(meeting);
   } catch (error) {
     console.log('[MEETING_DELETE]', error);
     return new NextResponse('Internal error', { status: 500 });

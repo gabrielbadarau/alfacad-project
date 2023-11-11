@@ -6,15 +6,13 @@ import prismadb from '@/lib/prismadb';
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { vacationId: string } }
+  { params }: { params: { projectId: string } }
 ) {
   try {
     const { userId: myId } = auth();
     const body = await req.json();
     const user = myId ? await clerkClient.users.getUser(myId) : null;
 
-    const { userId, startDate, endDate } = body;
-
     if (!myId) {
       return new NextResponse('Unauthorized', { status: 401 });
     }
@@ -23,41 +21,33 @@ export async function PATCH(
       return new NextResponse('Forbidden', { status: 403 });
     }
 
-    if (!userId) {
-      return new NextResponse('UserId is required', { status: 400 });
+    for (const property in body) {
+      if (!body[property]) {
+        return new NextResponse(`${property} is required`, { status: 400 });
+      }
     }
 
-    if (!startDate && !endDate) {
-      return new NextResponse('Start Date and End Date are required', {
-        status: 400,
-      });
+    if (!params.projectId) {
+      return new NextResponse('ProjectId is required', { status: 400 });
     }
 
-    if (!params.vacationId) {
-      return new NextResponse('VacationId is required', { status: 400 });
-    }
-
-    const vacation = await prismadb.vacation.update({
+    const project = await prismadb.project.update({
       where: {
-        id: params.vacationId,
+        id: params.projectId,
       },
-      data: {
-        userId,
-        startDate,
-        endDate,
-      },
+      data: body,
     });
 
-    return NextResponse.json(vacation);
+    return NextResponse.json(project);
   } catch (error) {
-    console.log('[VACATION_PATCH]', error);
+    console.log('[PROJECT_PATCH]', error);
     return new NextResponse('Internal error', { status: 500 });
   }
 }
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { vacationId: string } }
+  { params }: { params: { projectId: string } }
 ) {
   try {
     const { userId: myId } = auth();
@@ -71,19 +61,19 @@ export async function DELETE(
       return new NextResponse('Forbidden', { status: 403 });
     }
 
-    if (!params.vacationId) {
-      return new NextResponse('VacationId is required', { status: 400 });
+    if (!params.projectId) {
+      return new NextResponse('ProjectId is required', { status: 400 });
     }
 
-    const vacation = await prismadb.vacation.delete({
+    const project = await prismadb.project.delete({
       where: {
-        id: params.vacationId,
+        id: params.projectId,
       },
     });
 
-    return NextResponse.json(vacation);
+    return NextResponse.json(project);
   } catch (error) {
-    console.log('[VACATION_DELETE]', error);
+    console.log('[PROJECT_DELETE]', error);
     return new NextResponse('Internal error', { status: 500 });
   }
 }

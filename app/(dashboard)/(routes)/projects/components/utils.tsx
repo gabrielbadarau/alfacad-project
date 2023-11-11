@@ -37,3 +37,4 @@ export const projectTypes = Object.keys(ProjectTypeLabels).map((key) => ({
   label: ProjectTypeLabels[key as keyof typeof ProjectTypeLabels],
   value: ProjectTypeValues[key as keyof typeof ProjectTypeValues],
 }));
+
