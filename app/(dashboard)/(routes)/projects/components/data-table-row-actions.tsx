@@ -17,11 +17,10 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import DeleteModal from '@/components/delete-modal';
-
-import { Task } from './columns';
+import { ProjectInfo } from '@/types/project';
 
 interface DataTableRowActionsProps {
-  row: Row<Task>;
+  row: Row<ProjectInfo>;
 }
 
 const DataTableRowActions: React.FC<DataTableRowActionsProps> = ({ row }) => {

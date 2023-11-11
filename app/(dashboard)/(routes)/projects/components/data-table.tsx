@@ -21,14 +21,15 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { ProjectInfo } from '@/types/project';
+import { cn } from '@/lib/utils';
 
 import { DataTablePagination } from '../components/data-table-pagination';
 import { DataTableToolbar } from '../components/data-table-toolbar';
-import { Task } from './columns';
 
 interface DataTableProps {
-  columns: ColumnDef<Task>[];
-  data: Task[];
+  columns: ColumnDef<ProjectInfo>[];
+  data: ProjectInfo[];
 }
 
 const DataTable: React.FC<DataTableProps> = ({ columns, data }) => {
@@ -52,14 +53,21 @@ const DataTable: React.FC<DataTableProps> = ({ columns, data }) => {
   return (
     <div className='space-y-4'>
       <DataTableToolbar table={table} />
+
       <div className='rounded-md border'>
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
+                  const hideForSmallScreen =
+                    header.id === 'updatedAt' ? 'hidden sm:table-cell' : '';
+
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead
+                      className={cn(hideForSmallScreen)}
+                      key={header.id}
+                    >
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -79,14 +87,24 @@ const DataTable: React.FC<DataTableProps> = ({ columns, data }) => {
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
                 >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
+                  {row.getVisibleCells().map((cell) => {
+                    const hideForSmallScreen =
+                      cell.column.id === 'updatedAt'
+                        ? 'hidden sm:table-cell'
+                        : '';
+
+                    return (
+                      <TableCell
+                        className={cn(hideForSmallScreen)}
+                        key={cell.id}
+                      >
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    );
+                  })}
                 </TableRow>
               ))
             ) : (
@@ -102,6 +120,7 @@ const DataTable: React.FC<DataTableProps> = ({ columns, data }) => {
           </TableBody>
         </Table>
       </div>
+
       <DataTablePagination table={table} />
     </div>
   );

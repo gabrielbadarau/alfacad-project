@@ -110,7 +110,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                     </div>
                     <span className='ml-2 w-full'>{option.label}</span>
                     {option.icon && (
-                      <option.icon className='ml-2 h-5 w-6 text-muted-foreground' />
+                      <option.icon className='ml-2 h-5 w-6 text-muted-foreground shrink-0' />
                     )}
                   </CommandItem>
                 );

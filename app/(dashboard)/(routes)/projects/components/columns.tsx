@@ -2,20 +2,13 @@
 
 import { ColumnDef } from '@tanstack/react-table';
 import Client from '@/components/client';
+import { ProjectInfo } from '@/types/project';
 
 import { projectStatuses } from './utils';
 import DataTableRowActions from './data-table-row-actions';
 import NewProjectButton from './new-project-button';
 
-export type Task = {
-  id: string;
-  name: string;
-  status: string;
-  label: string;
-  priority: string;
-};
-
-export const columns: ColumnDef<Task>[] = [
+export const columns: ColumnDef<ProjectInfo>[] = [
   {
     accessorKey: 'name',
     header: 'Nume',
@@ -39,7 +32,9 @@ export const columns: ColumnDef<Task>[] = [
 
       return (
         <div className='flex items-center'>
-          {status.icon && <status.icon className='mr-2 h-4 w-4' />}
+          {status.icon && (
+            <status.icon className='mr-2 h-4 w-4 shrink-0 hidden sm:block' />
+          )}
           <span>{status.label}</span>
         </div>
       );
@@ -47,6 +42,15 @@ export const columns: ColumnDef<Task>[] = [
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
+  },
+  {
+    accessorKey: 'updatedAt',
+    header: 'Ultima modificare',
+    cell: ({ row }) => (
+      <div className='flex space-x-2'>
+        <span className='font-medium'>{row.getValue('updatedAt')}</span>
+      </div>
+    ),
   },
   {
     header: NewProjectButton,
