@@ -1,6 +1,7 @@
 export interface ProjectComments {}
 
 export interface ProjectInfo {
+  id: string;
   name: string;
   type: string;
   status: string;

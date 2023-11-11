@@ -49,7 +49,7 @@ model ProjectComments {
   comment   String
   createdAt DateTime @default(now())
 
-  Project Project @relation(fields: [projectId], references: [id])
+  Project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   @@index([projectId])
 }

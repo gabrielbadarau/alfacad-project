@@ -21,6 +21,7 @@ export const getProjects = async (): Promise<{
     });
 
     const projectsInfo = projects.map((project) => ({
+      id: project.id,
       name: project.name,
       type: project.type,
       status: project.status,

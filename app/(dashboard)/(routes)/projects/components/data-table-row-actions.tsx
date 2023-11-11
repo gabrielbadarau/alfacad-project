@@ -37,7 +37,7 @@ const DataTableRowActions: React.FC<DataTableRowActionsProps> = ({ row }) => {
   const onDelete = async () => {
     try {
       setLoading(true);
-      await axios.delete(`/api/vacation/${row.id}`);
+      await axios.delete(`/api/project/${row.original.id}`);
 
       router.refresh();
       toast.success('Lucrare ștearsă.');
@@ -67,14 +67,16 @@ const DataTableRowActions: React.FC<DataTableRowActionsProps> = ({ row }) => {
       </DropdownMenuTrigger>
 
       <DropdownMenuContent className='w-[160px]'>
-        <DropdownMenuItem onClick={() => router.push(`/projects/${row.id}`)}>
+        <DropdownMenuItem
+          onClick={() => router.push(`/projects/${row.original.id}`)}
+        >
           Edit
           <DropdownMenuShortcut>
             <Pencil className='h-4 w-4 shrink-0' />
           </DropdownMenuShortcut>
         </DropdownMenuItem>
 
-        <DropdownMenuItem onClick={() => onCopy(row.id)}>
+        <DropdownMenuItem onClick={() => onCopy(row.original.id)}>
           Copiază linkul
           <DropdownMenuShortcut>
             <Copy className='h-4 w-4 shrink-0' />
