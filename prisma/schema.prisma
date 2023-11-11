@@ -33,16 +33,16 @@ model Meeting {
 }
 
 model Project {
-  id        String            @id @default(uuid())
+  id        String           @id @default(uuid())
   name      String
   type      String
   status    String
-  comments  ProjectComments[]
-  createdAt DateTime          @default(now())
-  updatedAt DateTime          @updatedAt
+  comments  ProjectComment[]
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
 }
 
-model ProjectComments {
+model ProjectComment {
   id        String   @id @default(uuid())
   projectId String
   userId    String

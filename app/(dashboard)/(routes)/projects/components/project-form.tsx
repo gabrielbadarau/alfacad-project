@@ -18,10 +18,6 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import DeleteModal from '@/components/delete-modal';
-
-import { zodResolver } from '@hookform/resolvers/zod';
-import { User } from '@/types/user';
-import { Meeting } from '@prisma/client';
 import {
   Select,
   SelectContent,
@@ -29,6 +25,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { User } from '@/types/user';
+import { ProjectInfo } from '@/types/project';
+
 import { projectStatuses, projectTypes } from './utils';
 
 const formSchema = z.object({
@@ -37,16 +37,12 @@ const formSchema = z.object({
   status: z.string({ required_error: 'Acest câmp este obligatoriu.' }),
 });
 
-type MeetingWithArrayUsers = {
-  [K in keyof Meeting]: K extends 'users' ? string[] : Meeting[K];
-};
-
-interface MeetingFormProps {
-  initialData: MeetingWithArrayUsers | null;
+interface ProjectFormProps {
+  initialData: ProjectInfo | undefined;
   users: User[];
 }
 
-const ProjectForm: React.FC<MeetingFormProps> = ({ initialData, users }) => {
+const ProjectForm: React.FC<ProjectFormProps> = ({ initialData, users }) => {
   const params = useParams();
   const router = useRouter();
 
@@ -70,7 +66,7 @@ const ProjectForm: React.FC<MeetingFormProps> = ({ initialData, users }) => {
       setLoading(true);
 
       if (initialData) {
-        await axios.patch(`/api/meeting/${params.meetingId}`, data);
+        await axios.patch(`/api/project/${params.projectId}`, data);
       } else {
         await axios.post(`/api/project`, data);
       }
@@ -89,11 +85,11 @@ const ProjectForm: React.FC<MeetingFormProps> = ({ initialData, users }) => {
   const onDelete = async () => {
     try {
       setLoading(true);
-      await axios.delete(`/api/meeting/${params.meetingId}`);
+      await axios.delete(`/api/project/${params.projectId}`);
 
-      router.push(`/meetings`);
+      router.push(`/projects`);
       router.refresh();
-      toast.success('Întâlnire ștearsă.');
+      toast.success('Lucrare ștearsă.');
     } catch (error) {
       toast.error('Ceva nu a mers bine.');
     } finally {

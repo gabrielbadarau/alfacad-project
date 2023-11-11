@@ -1,5 +1,5 @@
 export enum ProjectTypeLabels {
-  INTABULARE_TEREN_CONSTRUCTIE = 'Intabulare teren / Constructie',
+  INTABULARE_TEREN_CONSTRUCTIE = 'Intabulare teren / constructie',
   INTABULARE_UI = 'Intabulare UI',
   DEZMEMBRARE_ALIPIRE = 'Dezmembrare / Alipire',
   APARTAMENTARE = 'Apartamentare',

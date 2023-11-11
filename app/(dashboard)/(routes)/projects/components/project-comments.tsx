@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { format } from 'date-fns';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
@@ -14,18 +15,19 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
-
 import { zodResolver } from '@hookform/resolvers/zod';
-
-import { mockComments } from './mockCommentsData';
+import { ProjectComment } from '@prisma/client';
 
 const formSchema = z.object({
   comments: z.string().min(1, 'Acest câmp este obligatoriu.'),
 });
 
-const ProjectComments = () => {
-  const comments = mockComments;
-  const alignStyle = 'right-comment';
+interface ProjectCommentsProps {
+  comments: ProjectComment[] | undefined;
+}
+
+const ProjectComments: React.FC<ProjectCommentsProps> = ({ comments }) => {
+  const alignStyle = 'left-comment';
 
   const [loading, setLoading] = useState(false);
   const bottomRef = useRef<HTMLDivElement | null>(null);
@@ -72,13 +74,26 @@ const ProjectComments = () => {
         ref={bottomRef}
         className='p-2 h-[calc(100vh-26rem)] overflow-auto mb-4'
       >
-        {comments.map((comment) => (
-          <div key={comment.id} className={alignStyle}>
-            <span className='userId'>Gabriel Badarau</span>
-            <span className='createdAt'>{comment.createdAt}</span>
-            <span className='comment'>{comment.comment}</span>
-          </div>
-        ))}
+        {!comments ? (
+          <p className='py-6 text-center text-sm text-muted-foreground tracking-wide'>
+            Niciun detaliu găsit
+          </p>
+        ) : (
+          comments.map((comment) => {
+            const formattedCreatedDate = format(
+              comment.createdAt,
+              'dd/MM/yy HH:mm'
+            );
+
+            return (
+              <div key={comment.id} className={alignStyle}>
+                <span className='userId'>Gabriel Badarau</span>
+                <span className='createdAt'>{formattedCreatedDate}</span>
+                <span className='comment'>{comment.comment}</span>
+              </div>
+            );
+          })
+        )}
       </Card>
 
       <Form {...form}>

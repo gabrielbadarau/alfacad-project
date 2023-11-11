@@ -47,19 +47,17 @@ export async function POST(req: Request) {
       },
     });
 
-    await prismadb.projectComments.createMany({
+    await prismadb.projectComment.create({
       data: {
         userId: userId,
         projectId: project.id,
-        comment: `Am creat lucrarea cu numele <strong>${
+        comment: `Am creat lucrarea cu numele \u21E8 ${
           project.name
-        }</strong>. Este de tipul <strong>${
-          ProjectTypeLabels[project.type as keyof typeof ProjectTypeLabels]
-        }</strong> si are statusul <strong>${
-          ProjectStatusLabels[
-            project.status as keyof typeof ProjectStatusLabels
-          ]
-        }</strong>`,
+        }. Este de tipul \u21E8 ${ProjectTypeLabels[
+          project.type as keyof typeof ProjectTypeLabels
+        ].toLowerCase()}. Are statusul \u21E8 ${ProjectStatusLabels[
+          project.status as keyof typeof ProjectStatusLabels
+        ].toLowerCase()}.`,
       },
     });
 

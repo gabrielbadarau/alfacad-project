@@ -1,4 +1,4 @@
-export interface ProjectComments {}
+import { ProjectComment } from '@prisma/client';
 
 export interface ProjectInfo {
   id: string;
@@ -10,5 +10,5 @@ export interface ProjectInfo {
 
 export interface Project {
   info: ProjectInfo;
-  comments: ProjectComments;
+  comments: ProjectComment;
 }
