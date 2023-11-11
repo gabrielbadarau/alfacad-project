@@ -15,7 +15,8 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { Separator } from '@/components/ui/separator';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import UserBullet from '@/components/user-bullet';
+
 import { cn } from '@/lib/utils';
 import { User } from '@/types/user';
 
@@ -54,13 +55,7 @@ const MultiUserSelect: React.FC<MultiUserSelectProps> = ({
             {options
               .filter((option) => values.includes(option.id))
               .map((option) => (
-                <Avatar key={option.id} className='h-7 w-7 ml-2'>
-                  <AvatarImage src={option.imageUrl} alt='Avatar' />
-                  <AvatarFallback className='bg-slate-800 text-white'>
-                    {option.firstName?.charAt(0)}
-                    {option.lastName?.charAt(0)}
-                  </AvatarFallback>
-                </Avatar>
+                <UserBullet user={option} key={option.id} />
               ))}
           </>
         )}
