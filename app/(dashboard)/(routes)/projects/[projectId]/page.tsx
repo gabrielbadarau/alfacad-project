@@ -18,6 +18,7 @@ import ProjectComments from '../components/project-comments';
 const ProjectPage = async ({ params }: { params: { projectId: string } }) => {
   const standardUsers = await getStandardUsers();
   const projectData = await getProject(params.projectId);
+
   const title = projectData ? 'Editează lucrarea' : 'Creează o lucrare nouă';
   const description = projectData
     ? 'Editează informațiile pe care dorești sa le modifici si apoi salvează modificările'
@@ -44,10 +45,7 @@ const ProjectPage = async ({ params }: { params: { projectId: string } }) => {
                 <CardDescription>{description}</CardDescription>
               </CardHeader>
               <CardContent className='space-y-2'>
-                <ProjectForm
-                  initialData={projectData?.info}
-                  users={standardUsers}
-                />
+                <ProjectForm initialData={projectData?.info} />
               </CardContent>
             </Card>
           </TabsContent>
@@ -61,7 +59,10 @@ const ProjectPage = async ({ params }: { params: { projectId: string } }) => {
                 </CardDescription>
               </CardHeader>
               <CardContent className='space-y-2'>
-                <ProjectComments comments={projectData?.comments} />
+                <ProjectComments
+                  comments={projectData?.comments}
+                  users={standardUsers}
+                />
               </CardContent>
             </Card>
           </TabsContent>

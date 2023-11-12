@@ -7,7 +7,6 @@ import MeetingForm from '../components/meeting-form';
 
 const MeetingPage = async ({ params }: { params: { meetingId: string } }) => {
   const standardUsers = await getStandardUsers();
-
   const meetingData = await getMeeting(params.meetingId);
 
   return (

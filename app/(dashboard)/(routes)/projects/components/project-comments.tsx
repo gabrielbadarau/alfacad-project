@@ -5,6 +5,7 @@ import { format } from 'date-fns';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
+import { useUser } from '@clerk/nextjs';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import {
@@ -14,21 +15,27 @@ import {
   FormItem,
   FormMessage,
 } from '@/components/ui/form';
+import UserBullet from '@/components/user-bullet';
 import { Textarea } from '@/components/ui/textarea';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ProjectComment } from '@prisma/client';
+import { User } from '@/types/user';
+import { cn } from '@/lib/utils';
 
 const formSchema = z.object({
-  comments: z.string().min(1, 'Acest câmp este obligatoriu.'),
+  comment: z.string().min(1, 'Acest câmp este obligatoriu.'),
 });
 
 interface ProjectCommentsProps {
   comments: ProjectComment[] | undefined;
+  users: User[];
 }
 
-const ProjectComments: React.FC<ProjectCommentsProps> = ({ comments }) => {
-  const alignStyle = 'left-comment';
-
+const ProjectComments: React.FC<ProjectCommentsProps> = ({
+  comments,
+  users,
+}) => {
+  const { user } = useUser();
   const [loading, setLoading] = useState(false);
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
@@ -45,7 +52,7 @@ const ProjectComments: React.FC<ProjectCommentsProps> = ({ comments }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      comments: '',
+      comment: '',
     },
   });
 
@@ -80,18 +87,51 @@ const ProjectComments: React.FC<ProjectCommentsProps> = ({ comments }) => {
           </p>
         ) : (
           comments.map((comment) => {
-            const formattedCreatedDate = format(
-              comment.createdAt,
-              'dd/MM/yy HH:mm'
-            );
+            if (user) {
+              const author = users.find((user) => user.id === comment.userId);
+              const alignStyle =
+                user.id === comment.userId ? 'left-comment' : 'right-comment';
+              const formattedCreatedDate = format(
+                comment.createdAt,
+                'dd/MM/yy HH:mm'
+              );
+              const userData = {
+                emailAddress: user.emailAddresses[0].emailAddress,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                id: user.id,
+                imageUrl: user.imageUrl,
+              };
 
-            return (
-              <div key={comment.id} className={alignStyle}>
-                <span className='userId'>Gabriel Badarau</span>
-                <span className='createdAt'>{formattedCreatedDate}</span>
-                <span className='comment'>{comment.comment}</span>
-              </div>
-            );
+              return (
+                <div key={comment.id} className={alignStyle}>
+                  <div
+                    className={cn(
+                      'flex flex-nowrap justify-center items-center gap-1',
+                      alignStyle === 'right-comment'
+                        ? 'flex-row-reverse'
+                        : 'flex-row'
+                    )}
+                  >
+                    <UserBullet user={userData} />
+                    <div
+                      className={cn(
+                        'flex flex-col',
+                        alignStyle === 'right-comment'
+                          ? 'items-end'
+                          : 'items-start'
+                      )}
+                    >
+                      <span className='userId'>
+                        {author?.firstName} {author?.lastName}
+                      </span>
+                      <span className='createdAt'>{formattedCreatedDate}</span>
+                    </div>
+                  </div>
+                  <span className='comment'>{comment.comment}</span>
+                </div>
+              );
+            }
           })
         )}
       </Card>
@@ -101,7 +141,7 @@ const ProjectComments: React.FC<ProjectCommentsProps> = ({ comments }) => {
           <div className='flex flex-wrap items-center justify-end w-full gap-3'>
             <FormField
               control={form.control}
-              name='comments'
+              name='comment'
               render={({ field }) => (
                 <FormItem className='grid gap-1 w-full'>
                   <FormControl>

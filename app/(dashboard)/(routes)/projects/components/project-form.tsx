@@ -26,7 +26,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { User } from '@/types/user';
 import { ProjectInfo } from '@/types/project';
 
 import { projectStatuses, projectTypes } from './utils';
@@ -39,10 +38,9 @@ const formSchema = z.object({
 
 interface ProjectFormProps {
   initialData: ProjectInfo | undefined;
-  users: User[];
 }
 
-const ProjectForm: React.FC<ProjectFormProps> = ({ initialData, users }) => {
+const ProjectForm: React.FC<ProjectFormProps> = ({ initialData }) => {
   const params = useParams();
   const router = useRouter();
 
