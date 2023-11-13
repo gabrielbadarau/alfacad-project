@@ -27,6 +27,7 @@ import {
 } from '@/components/ui/select';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ProjectInfo } from '@/types/project';
+import { findDifferentProperties } from '@/lib/utils';
 
 import { projectStatuses, projectTypes } from './utils';
 
@@ -64,7 +65,12 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ initialData }) => {
       setLoading(true);
 
       if (initialData) {
-        await axios.patch(`/api/project/${params.projectId}`, data);
+        const changedProperties = findDifferentProperties(initialData, data);
+
+        await axios.patch(
+          `/api/project/${params.projectId}`,
+          changedProperties
+        );
       } else {
         await axios.post(`/api/project`, data);
       }

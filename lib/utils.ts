@@ -1,3 +1,6 @@
+import { ProjectStatusLabels } from '@/types/project-status';
+import { ProjectTypeLabels } from '@/types/project-type';
+
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -20,4 +23,34 @@ export function findDifferentProperties<Type extends object>(
   }
 
   return differentProperties;
+}
+
+export function getFormattedPropertyValue(key: string, value: string) {
+  let formattedValue = '';
+
+  switch (key) {
+    case 'type': {
+      formattedValue =
+        ProjectTypeLabels[
+          value as keyof typeof ProjectTypeLabels
+        ].toLowerCase();
+
+      break;
+    }
+    case 'status': {
+      formattedValue =
+        ProjectStatusLabels[
+          value as keyof typeof ProjectStatusLabels
+        ].toLowerCase();
+
+      break;
+    }
+    default: {
+      formattedValue = value;
+
+      break;
+    }
+  }
+
+  return formattedValue;
 }

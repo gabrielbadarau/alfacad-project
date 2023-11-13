@@ -90,7 +90,7 @@ const ProjectComments: React.FC<ProjectCommentsProps> = ({
             if (user) {
               const author = users.find((user) => user.id === comment.userId);
               const alignStyle =
-                user.id === comment.userId ? 'left-comment' : 'right-comment';
+                user.id === comment.userId ? 'right-comment' : 'left-comment';
               const formattedCreatedDate = format(
                 comment.createdAt,
                 'dd/MM/yy HH:mm'

@@ -15,6 +15,8 @@ import { cn } from '@/lib/utils';
 import ProjectForm from '../components/project-form';
 import ProjectComments from '../components/project-comments';
 
+export const revalidate = 0;
+
 const ProjectPage = async ({ params }: { params: { projectId: string } }) => {
   const standardUsers = await getStandardUsers();
   const projectData = await getProject(params.projectId);

@@ -12,3 +12,9 @@ export interface Project {
   info: ProjectInfo;
   comments: ProjectComment;
 }
+
+export enum ChangedProjectProperties {
+  name = 'numele',
+  type = 'tipul',
+  status = 'statusul',
+}

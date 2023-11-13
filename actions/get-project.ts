@@ -9,7 +9,11 @@ export const getProject = async (projectId: string) => {
         id: projectId,
       },
       include: {
-        comments: true,
+        comments: {
+          orderBy: {
+            createdAt: 'asc',
+          },
+        },
       },
     });
 
