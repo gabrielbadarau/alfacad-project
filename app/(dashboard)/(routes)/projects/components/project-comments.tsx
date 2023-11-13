@@ -3,7 +3,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { format } from 'date-fns';
 import { useForm } from 'react-hook-form';
+import { useParams, useRouter } from 'next/navigation';
 import * as z from 'zod';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 import { useUser } from '@clerk/nextjs';
 import { Card } from '@/components/ui/card';
@@ -37,6 +40,8 @@ const ProjectComments: React.FC<ProjectCommentsProps> = ({
 }) => {
   const { user } = useUser();
   const [loading, setLoading] = useState(false);
+  const params = useParams();
+  const router = useRouter();
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
   const scrollToBottom = () =>
@@ -47,7 +52,7 @@ const ProjectComments: React.FC<ProjectCommentsProps> = ({
 
   useEffect(() => {
     scrollToBottom();
-  }, []);
+  }, [comments]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -58,18 +63,18 @@ const ProjectComments: React.FC<ProjectCommentsProps> = ({
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     try {
-      // setLoading(true);
-      // if (initialData) {
-      //   await axios.patch(`/api/meeting/${params.meetingId}`, data);
-      // } else {
-      //   await axios.post(`/api/meeting`, data);
-      // }
-      // form.reset();
-      // router.push(`/meetings`);
-      // router.refresh();
-      // toast.success(toastMessage);
+      setLoading(true);
+
+      await axios.post(`/api/comment`, {
+        comment: data.comment,
+        projectId: params.projectId,
+      });
+
+      form.reset();
+      router.refresh();
+      toast.success('Mesaj postat');
     } catch (error) {
-      // toast.error('Ceva nu a mers bine.');
+      toast.error('Ceva nu a mers bine.');
     } finally {
       setLoading(false);
     }
