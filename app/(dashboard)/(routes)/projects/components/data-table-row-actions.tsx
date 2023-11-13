@@ -18,6 +18,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import DeleteModal from '@/components/delete-modal';
 import { ProjectInfo } from '@/types/project';
+import { useUser } from '@clerk/nextjs';
 
 interface DataTableRowActionsProps {
   row: Row<ProjectInfo>;
@@ -28,6 +29,7 @@ const DataTableRowActions: React.FC<DataTableRowActionsProps> = ({ row }) => {
   const [loading, setLoading] = useState(false);
   const [openDropdownMenu, setOpenDropdownMenu] = useState(false);
   const router = useRouter();
+  const { user } = useUser();
 
   const onCopy = (id: string) => {
     navigator.clipboard.writeText(`${window.location.href}/${id}`);
@@ -82,28 +84,32 @@ const DataTableRowActions: React.FC<DataTableRowActionsProps> = ({ row }) => {
             <Copy className='h-4 w-4 shrink-0' />
           </DropdownMenuShortcut>
         </DropdownMenuItem>
-        <DropdownMenuSeparator />
 
-        <DropdownMenuItem
-          onSelect={(e) => e.preventDefault()}
-          onClick={() => setOpenDeleteModal(true)}
-          className='text-red-600 hover:text-red-600'
-        >
-          Delete
-          <DropdownMenuShortcut>
-            <Trash2 className='h-4 w-4 shrink-0' />
-          </DropdownMenuShortcut>
-        </DropdownMenuItem>
+        {(user?.publicMetadata.premiumUser as boolean) && (
+          <>
+            <DropdownMenuSeparator />
 
-        <DeleteModal
-          isOpen={openDeleteModal}
-          onClose={() => {
-            setOpenDeleteModal(false);
-            setOpenDropdownMenu(false);
-          }}
-          loading={loading}
-          onConfirm={onDelete}
-        />
+            <DropdownMenuItem
+              onSelect={(e) => e.preventDefault()}
+              onClick={() => setOpenDeleteModal(true)}
+              className='text-red-600 hover:text-red-600'
+            >
+              Delete
+              <DropdownMenuShortcut>
+                <Trash2 className='h-4 w-4 shrink-0' />
+              </DropdownMenuShortcut>
+            </DropdownMenuItem>
+            <DeleteModal
+              isOpen={openDeleteModal}
+              onClose={() => {
+                setOpenDeleteModal(false);
+                setOpenDropdownMenu(false);
+              }}
+              loading={loading}
+              onConfirm={onDelete}
+            />
+          </>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );

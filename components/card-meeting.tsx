@@ -32,6 +32,7 @@ import DeleteModal from '@/components/delete-modal';
 import UserBullet from '@/components/user-bullet';
 import Ribbon from '@/components/ribbon';
 import { Meeting } from '@/types/meeting';
+import { useUser } from '@clerk/nextjs';
 
 interface CardMeetingProps {
   data: Meeting;
@@ -41,6 +42,7 @@ const CardMeeting: React.FC<CardMeetingProps> = ({ data }) => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openDropdownMenu, setOpenDropdownMenu] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { user } = useUser();
   const router = useRouter();
 
   const formatDate = format(data.date, 'd MMMM yyyy', { locale: ro });
@@ -67,56 +69,58 @@ const CardMeeting: React.FC<CardMeetingProps> = ({ data }) => {
       <CardHeader className='flex flex-row items-center justify-between py-4'>
         <CardTitle className='truncate py-0.5'>{data.title}</CardTitle>
 
-        <DropdownMenu
-          modal={false}
-          open={openDropdownMenu}
-          onOpenChange={(isOpen) => setOpenDropdownMenu(isOpen)}
-        >
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant='outline'
-              className='ml-2 flex h-8 w-12 p-0 data-[state=open]:bg-muted shrink-0 !mt-0'
-            >
-              <ChevronRight className='shrink-0 h-5 w-5' />
-              <span className='sr-only'>Open menu</span>
-            </Button>
-          </DropdownMenuTrigger>
+        {(user?.publicMetadata.premiumUser as boolean) && (
+          <DropdownMenu
+            modal={false}
+            open={openDropdownMenu}
+            onOpenChange={(isOpen) => setOpenDropdownMenu(isOpen)}
+          >
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant='outline'
+                className='ml-2 flex h-8 w-12 p-0 data-[state=open]:bg-muted shrink-0 !mt-0'
+              >
+                <ChevronRight className='shrink-0 h-5 w-5' />
+                <span className='sr-only'>Open menu</span>
+              </Button>
+            </DropdownMenuTrigger>
 
-          <DropdownMenuContent className='w-[160px]'>
-            <DropdownMenuItem
-              className='cursor-pointer'
-              onClick={() => router.push(`/meetings/${data.id}`)}
-            >
-              Editează
-              <DropdownMenuShortcut>
-                <Pencil className='h-4 w-4 shrink-0' />
-              </DropdownMenuShortcut>
-            </DropdownMenuItem>
+            <DropdownMenuContent className='w-[160px]'>
+              <DropdownMenuItem
+                className='cursor-pointer'
+                onClick={() => router.push(`/meetings/${data.id}`)}
+              >
+                Editează
+                <DropdownMenuShortcut>
+                  <Pencil className='h-4 w-4 shrink-0' />
+                </DropdownMenuShortcut>
+              </DropdownMenuItem>
 
-            <DropdownMenuSeparator />
+              <DropdownMenuSeparator />
 
-            <DropdownMenuItem
-              onSelect={(e) => e.preventDefault()}
-              onClick={() => setOpenDeleteModal(true)}
-              className='text-red-600 hover:text-red-600 cursor-pointer'
-            >
-              Șterge
-              <DropdownMenuShortcut>
-                <Trash2 className='h-4 w-4 shrink-0' />
-              </DropdownMenuShortcut>
-            </DropdownMenuItem>
+              <DropdownMenuItem
+                onSelect={(e) => e.preventDefault()}
+                onClick={() => setOpenDeleteModal(true)}
+                className='text-red-600 hover:text-red-600 cursor-pointer'
+              >
+                Șterge
+                <DropdownMenuShortcut>
+                  <Trash2 className='h-4 w-4 shrink-0' />
+                </DropdownMenuShortcut>
+              </DropdownMenuItem>
 
-            <DeleteModal
-              isOpen={openDeleteModal}
-              onClose={() => {
-                setOpenDeleteModal(false);
-                setOpenDropdownMenu(false);
-              }}
-              loading={loading}
-              onConfirm={onDelete}
-            />
-          </DropdownMenuContent>
-        </DropdownMenu>
+              <DeleteModal
+                isOpen={openDeleteModal}
+                onClose={() => {
+                  setOpenDeleteModal(false);
+                  setOpenDropdownMenu(false);
+                }}
+                loading={loading}
+                onConfirm={onDelete}
+              />
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </CardHeader>
 
       <Separator />

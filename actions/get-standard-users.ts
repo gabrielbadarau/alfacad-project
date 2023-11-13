@@ -4,7 +4,7 @@ export const getStandardUsers = async () => {
   const standardUsers = await clerkClient.users.getUserList();
 
   return standardUsers
-    .filter((user) => user.privateMetadata.standardUser)
+    .filter((user) => user.publicMetadata.standardUser)
     .map((user) => ({
       emailAddress: user.emailAddresses[0].emailAddress,
       firstName: user.firstName,

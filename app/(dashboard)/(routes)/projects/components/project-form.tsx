@@ -28,6 +28,7 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ProjectInfo } from '@/types/project';
 import { findDifferentProperties } from '@/lib/utils';
+import { useUser } from '@clerk/nextjs';
 
 import { projectStatuses, projectTypes } from './utils';
 
@@ -44,6 +45,7 @@ interface ProjectFormProps {
 const ProjectForm: React.FC<ProjectFormProps> = ({ initialData }) => {
   const params = useParams();
   const router = useRouter();
+  const { user } = useUser();
 
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -193,7 +195,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ initialData }) => {
           </div>
 
           <div className='space-y-3 sm:space-y-0 sm:space-x-3 flex flex-wrap items-center justify-end w-full'>
-            {initialData && (
+            {initialData && (user?.publicMetadata.premiumUser as boolean) && (
               <Button
                 type='button'
                 variant='destructive'

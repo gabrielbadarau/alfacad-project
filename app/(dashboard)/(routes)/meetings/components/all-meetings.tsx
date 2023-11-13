@@ -7,6 +7,8 @@ import CardMeeting from '@/components/card-meeting';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Meeting } from '@/types/meeting';
+import { useUser } from '@clerk/nextjs';
+import { cn } from '@/lib/utils';
 
 import SearchFilter from './search-filter';
 import Pagination from './pagination';
@@ -21,16 +23,25 @@ const AllMeetings: React.FC<AllMeetingsProps> = ({
   totalMeetings,
 }) => {
   const router = useRouter();
+  const { user } = useUser();
 
   return (
     <>
-      <div className='flex sm:flex-row-reverse flex-wrap justify-between items-center'>
-        <Button
-          className='w-full mb-3 sm:w-auto sm:mb-0'
-          onClick={() => router.push('/meetings/create')}
-        >
-          <BellPlus className='mr-2 h-4 w-4' /> Planifică o întâlnire
-        </Button>
+      <div
+        className={cn(
+          'flex flex-wrap justify-between items-center',
+          (user?.publicMetadata.premiumUser as boolean) && 'sm:flex-row-reverse'
+        )}
+      >
+        {(user?.publicMetadata.premiumUser as boolean) && (
+          <Button
+            className='w-full mb-3 sm:w-auto sm:mb-0'
+            onClick={() => router.push('/meetings/create')}
+          >
+            <BellPlus className='mr-2 h-4 w-4' /> Planifică o întâlnire
+          </Button>
+        )}
+
         <SearchFilter />
       </div>
       <Card>

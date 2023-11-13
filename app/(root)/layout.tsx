@@ -10,7 +10,7 @@ export default async function SetupLayout({
 }) {
   const user = await currentUser();
 
-  if (user?.privateMetadata.standardUser) {
+  if (user?.publicMetadata.standardUser) {
     redirect('/overview');
   }
 

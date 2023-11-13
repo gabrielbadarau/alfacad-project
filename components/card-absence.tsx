@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/button';
 import DeleteModal from '@/components/delete-modal';
 import Ribbon from '@/components/ribbon';
 import { Vacation } from '@/types/vacation';
+import { useUser } from '@clerk/nextjs';
 
 interface CardAbsenceProps {
   data: Vacation;
@@ -20,6 +21,7 @@ interface CardAbsenceProps {
 const CardAbsence: React.FC<CardAbsenceProps> = ({ data }) => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { user } = useUser();
   const router = useRouter();
 
   const days = differenceInDays(data.endDate, data.startDate) + 1;
@@ -83,13 +85,15 @@ const CardAbsence: React.FC<CardAbsenceProps> = ({ data }) => {
             </p>
           </div>
 
-          <Button
-            variant='ghost'
-            className='flex h-8 w-12 shrink-0 text-slate-700'
-            onClick={() => setOpenDeleteModal(true)}
-          >
-            <Trash2 className='shrink-0 h-5 w-5' />
-          </Button>
+          {(user?.publicMetadata.premiumUser as boolean) && (
+            <Button
+              variant='ghost'
+              className='flex h-8 w-12 shrink-0 text-slate-700'
+              onClick={() => setOpenDeleteModal(true)}
+            >
+              <Trash2 className='shrink-0 h-5 w-5' />
+            </Button>
+          )}
         </div>
       </div>
     </>

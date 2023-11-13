@@ -19,7 +19,7 @@ export async function PATCH(
       return new NextResponse('Unauthorized', { status: 401 });
     }
 
-    if (!user?.privateMetadata.standardUser) {
+    if (!user?.publicMetadata.premiumUser) {
       return new NextResponse('Forbidden', { status: 403 });
     }
 
@@ -97,7 +97,7 @@ export async function DELETE(
       return new NextResponse('Unauthorized', { status: 401 });
     }
 
-    if (!user?.privateMetadata.standardUser) {
+    if (!user?.publicMetadata.premiumUser) {
       return new NextResponse('Forbidden', { status: 403 });
     }
 

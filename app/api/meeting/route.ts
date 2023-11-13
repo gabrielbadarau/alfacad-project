@@ -16,7 +16,7 @@ export async function POST(req: Request) {
       return new NextResponse('Unauthorized', { status: 401 });
     }
 
-    if (!user?.privateMetadata.standardUser) {
+    if (!user?.publicMetadata.premiumUser) {
       return new NextResponse('Forbidden', { status: 403 });
     }
 
