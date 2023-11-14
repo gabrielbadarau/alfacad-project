@@ -4,13 +4,22 @@ import prismadb from '@/lib/prismadb';
 import { ProjectInfo } from '@/types/project';
 import { currentUser } from '@clerk/nextjs';
 
-export const getProjects = async (filteredSearch?: {
-  filterName: string;
-  filterStatus: string[];
-}): Promise<{
+export const getProjects = async (
+  filteredSearch?: {
+    filterName: string;
+    filterStatus: string[];
+  },
+  pageOptions?: {
+    page: number;
+    pageSize: number;
+  }
+): Promise<{
   projects: ProjectInfo[];
+  totalDocuments: number;
 }> => {
   try {
+    let skip = 0;
+    let take = 10;
     const user = await currentUser();
     const whereSearch = { AND: [] };
 
@@ -44,7 +53,17 @@ export const getProjects = async (filteredSearch?: {
       }
     }
 
+    if (pageOptions?.pageSize) {
+      take = Number(pageOptions.pageSize);
+    }
+
+    if (pageOptions?.page) {
+      skip = Number(take * (pageOptions.page - 1));
+    }
+
     const projects = await prismadb.project.findMany({
+      take,
+      skip,
       where: whereSearch,
       orderBy: {
         updatedAt: 'desc',
@@ -59,9 +78,16 @@ export const getProjects = async (filteredSearch?: {
       updatedAt: format(project.updatedAt, 'dd/MM/yy HH:mm'),
     }));
 
-    return { projects: projectsInfo };
+    const countDocuments = await prismadb.project.count({
+      where: whereSearch,
+      orderBy: {
+        updatedAt: 'desc',
+      },
+    });
+
+    return { projects: projectsInfo, totalDocuments: countDocuments };
   } catch (error) {
     console.log('[PROJECT_GET]', error);
-    return { projects: [] };
+    return { projects: [], totalDocuments: 0 };
   }
 };

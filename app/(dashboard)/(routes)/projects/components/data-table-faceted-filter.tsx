@@ -48,7 +48,7 @@ export function DataTableFacetedFilter<TData, TValue>({
   }, [searchParams]);
 
   const changeUrl = (values: string[]) => {
-    const query = { status: values };
+    const query = { status: values, pageSize: null, page: null };
 
     const url = qs.stringifyUrl(
       {
@@ -61,12 +61,15 @@ export function DataTableFacetedFilter<TData, TValue>({
     router.push(url);
   };
 
-  const deleteValueFromSelectedValues = (value: string) => {
+  const deleteStatus = (value: string) => {
     const newArray = selectedValues.filter(
       (selectedValue) => selectedValue !== value
     );
+    changeUrl(newArray);
+  };
 
-    setSelectedValues(newArray);
+  const addStatus = (value: string) => {
+    const newArray = [...selectedValues, value];
     changeUrl(newArray);
   };
 
@@ -124,10 +127,9 @@ export function DataTableFacetedFilter<TData, TValue>({
                     key={option.value}
                     onSelect={() => {
                       if (isSelected) {
-                        deleteValueFromSelectedValues(option.value);
+                        deleteStatus(option.value);
                       } else {
-                        selectedValues.push(option.value);
-                        changeUrl(selectedValues);
+                        addStatus(option.value);
                       }
                     }}
                   >

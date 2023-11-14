@@ -11,19 +11,31 @@ interface ProjectPageProps {
   searchParams: {
     search: string;
     status: string[];
+    page: number;
+    pageSize: number;
   };
 }
 
 const ProjectsPage: React.FC<ProjectPageProps> = async ({ searchParams }) => {
-  const { projects } = await getProjects({
-    filterName: searchParams.search,
-    filterStatus: searchParams.status,
-  });
+  const { projects, totalDocuments } = await getProjects(
+    {
+      filterName: searchParams.search,
+      filterStatus: searchParams.status,
+    },
+    {
+      page: searchParams.page,
+      pageSize: searchParams.pageSize,
+    }
+  );
 
   return (
     <div className='space-y-4 p-8 pt-6'>
       <Client>
-        <DataTable columns={columns} data={projects} />
+        <DataTable
+          columns={columns}
+          data={projects}
+          totalProjects={totalDocuments}
+        />
       </Client>
     </div>
   );

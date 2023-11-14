@@ -1,16 +1,9 @@
 'use client';
 
-import { useState } from 'react';
-
 import {
   ColumnDef,
-  ColumnFiltersState,
   flexRender,
   getCoreRowModel,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
-  getFilteredRowModel,
-  getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
 import {
@@ -30,29 +23,24 @@ import { DataTableToolbar } from '../components/data-table-toolbar';
 interface DataTableProps {
   columns: ColumnDef<ProjectInfo>[];
   data: ProjectInfo[];
+  totalProjects: number;
 }
 
-const DataTable: React.FC<DataTableProps> = ({ columns, data }) => {
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-
+const DataTable: React.FC<DataTableProps> = ({
+  columns,
+  data,
+  totalProjects,
+}) => {
   const table = useReactTable({
     data,
     columns,
-    state: {
-      columnFilters,
-    },
     enableRowSelection: true,
-    onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getFacetedRowModel: getFacetedRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
   return (
     <div className='space-y-4'>
-      <DataTableToolbar table={table} />
+      <DataTableToolbar />
 
       <div className='rounded-md border'>
         <Table>
@@ -121,7 +109,7 @@ const DataTable: React.FC<DataTableProps> = ({ columns, data }) => {
         </Table>
       </div>
 
-      <DataTablePagination table={table} />
+      <DataTablePagination table={table} totalProjects={totalProjects} />
     </div>
   );
 };

@@ -13,13 +13,7 @@ import useDebounce from '@/hooks/useDebounce';
 import { projectStatuses } from './utils';
 import { DataTableFacetedFilter } from './data-table-faceted-filter';
 
-interface DataTableToolbarProps<TData> {
-  table: Table<TData>;
-}
-
-export function DataTableToolbar<TData>({
-  table,
-}: DataTableToolbarProps<TData>) {
+export function DataTableToolbar() {
   const [isFilterOn, setIsFilterOn] = useState<boolean>(false);
   const [searchFilter, setSearchFilter] = useState<string>('');
   const searchParams = useSearchParams();
@@ -38,7 +32,7 @@ export function DataTableToolbar<TData>({
   }, [searchParams]);
 
   const changeUrl = (e: string) => {
-    const query = { search: e ? e : null };
+    const query = { search: e ? e : null, pageSize: null, page: null };
 
     const url = qs.stringifyUrl(
       {
@@ -56,7 +50,7 @@ export function DataTableToolbar<TData>({
   };
 
   const resetFilters = () => {
-    const query = { search: null, status: null };
+    const query = { search: null, status: null, page: null, pageSize: null };
 
     const urlWithoutParams = qs.stringifyUrl(
       {
@@ -75,7 +69,7 @@ export function DataTableToolbar<TData>({
         <Input
           placeholder='Caută după nume...'
           value={searchFilter}
-          onChange={(event) => filterByName(event)}
+          onChange={filterByName}
           className='h-8 w-[150px] lg:w-[250px]'
         />
 
@@ -84,7 +78,7 @@ export function DataTableToolbar<TData>({
         {isFilterOn && (
           <Button
             variant='ghost'
-            onClick={() => resetFilters()}
+            onClick={resetFilters}
             className='h-8 px-2 lg:px-3'
           >
             Reset

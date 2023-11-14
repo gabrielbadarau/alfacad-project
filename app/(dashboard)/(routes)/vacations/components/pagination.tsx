@@ -30,7 +30,6 @@ const Pagination: React.FC<PaginationProps> = ({ totalAbsences }) => {
     const currentUrl = qs.parse(searchParams.toString());
 
     const query = {
-      users: currentUrl.users,
       page: currentUrl.page ? +currentUrl.page + 1 : 2,
     };
 
@@ -49,7 +48,6 @@ const Pagination: React.FC<PaginationProps> = ({ totalAbsences }) => {
     const currentUrl = qs.parse(searchParams.toString());
 
     const query = {
-      users: currentUrl.users,
       page:
         currentUrl.page && +currentUrl.page !== 2 ? +currentUrl.page - 1 : null,
     };
