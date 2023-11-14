@@ -55,7 +55,7 @@ const CardAbsence: React.FC<CardAbsenceProps> = ({ data }) => {
         onConfirm={onDelete}
       />
 
-      <div className='flex flex-col flex-nowrap gap-4 border-2 rounded-lg p-4 border-slate-100 min-w-[18rem] relative'>
+      <div className='flex flex-col flex-nowrap gap-4 border-2 rounded-lg p-4 border-slate-10 min-w-[12rem] relative'>
         <Ribbon startDate={data.startDate} endDate={data.endDate} />
 
         <div className='flex flex-row flex-nowrap'>
@@ -67,7 +67,7 @@ const CardAbsence: React.FC<CardAbsenceProps> = ({ data }) => {
             </AvatarFallback>
           </Avatar>
 
-          <div className='pl-4 space-y-1 min-w-[13.5rem]'>
+          <div className='pl-4 space-y-1 min-w-[7.5rem]'>
             <p className='text-sm font-medium leading-none truncate'>
               {data.firstName} {data.lastName}
             </p>

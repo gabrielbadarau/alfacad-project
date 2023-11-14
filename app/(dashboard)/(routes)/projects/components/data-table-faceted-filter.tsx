@@ -1,6 +1,8 @@
+import { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Check, PlusCircle } from 'lucide-react';
+import qs from 'query-string';
 
-import { Column } from '@tanstack/react-table';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -18,7 +20,6 @@ import {
 import { Separator } from '@/components/ui/separator';
 
 interface DataTableFacetedFilter<TData, TValue> {
-  column?: Column<TData, TValue>;
   title?: string;
   options: {
     label: string;
@@ -28,11 +29,46 @@ interface DataTableFacetedFilter<TData, TValue> {
 }
 
 export function DataTableFacetedFilter<TData, TValue>({
-  column,
   title,
   options,
 }: DataTableFacetedFilter<TData, TValue>) {
-  const selectedValues = new Set(column?.getFilterValue() as string[]);
+  const [selectedValues, setSelectedValues] = useState<string[]>([]);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  useEffect(() => {
+    const currentUrl = qs.parse(searchParams.toString());
+    const query = currentUrl['status'] ?? [];
+
+    if (Array.isArray(query)) {
+      setSelectedValues(query as string[]);
+    } else {
+      setSelectedValues([query]);
+    }
+  }, [searchParams]);
+
+  const changeUrl = (values: string[]) => {
+    const query = { status: values };
+
+    const url = qs.stringifyUrl(
+      {
+        url: window.location.href,
+        query,
+      },
+      { skipNull: true }
+    );
+
+    router.push(url);
+  };
+
+  const deleteValueFromSelectedValues = (value: string) => {
+    const newArray = selectedValues.filter(
+      (selectedValue) => selectedValue !== value
+    );
+
+    setSelectedValues(newArray);
+    changeUrl(newArray);
+  };
 
   return (
     <Popover>
@@ -40,26 +76,26 @@ export function DataTableFacetedFilter<TData, TValue>({
         <Button variant='outline' size='sm' className='h-8 border-dashed'>
           <PlusCircle className='mr-2 h-4 w-4 shrink-0' />
           {title}
-          {selectedValues?.size > 0 && (
+          {selectedValues?.length > 0 && (
             <>
               <Separator orientation='vertical' className='mx-2 h-4' />
               <Badge
                 variant='secondary'
                 className='rounded-sm px-1 font-normal lg:hidden'
               >
-                {selectedValues.size}
+                {selectedValues.length}
               </Badge>
               <div className='hidden space-x-1 lg:flex'>
-                {selectedValues.size > 2 ? (
+                {selectedValues.length > 2 ? (
                   <Badge
                     variant='secondary'
                     className='rounded-sm px-1 font-normal'
                   >
-                    {selectedValues.size} selected
+                    {selectedValues.length} selected
                   </Badge>
                 ) : (
                   options
-                    .filter((option) => selectedValues.has(option.value))
+                    .filter((option) => selectedValues.includes(option.value))
                     .map((option) => (
                       <Badge
                         variant='secondary'
@@ -81,21 +117,18 @@ export function DataTableFacetedFilter<TData, TValue>({
           <CommandList>
             <CommandGroup>
               {options.map((option) => {
-                const isSelected = selectedValues.has(option.value);
+                const isSelected = selectedValues.includes(option.value);
                 return (
                   <CommandItem
                     className='justify-between'
                     key={option.value}
                     onSelect={() => {
                       if (isSelected) {
-                        selectedValues.delete(option.value);
+                        deleteValueFromSelectedValues(option.value);
                       } else {
-                        selectedValues.add(option.value);
+                        selectedValues.push(option.value);
+                        changeUrl(selectedValues);
                       }
-                      const filterValues = Array.from(selectedValues);
-                      column?.setFilterValue(
-                        filterValues.length ? filterValues : undefined
-                      );
                     }}
                   >
                     <div

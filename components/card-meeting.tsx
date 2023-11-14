@@ -64,7 +64,7 @@ const CardMeeting: React.FC<CardMeetingProps> = ({ data }) => {
   };
 
   return (
-    <Card className='min-w-[19rem] relative'>
+    <Card className='relative'>
       <Ribbon startDate={data.date} endDate={data.date} />
       <CardHeader className='flex flex-row items-center justify-between py-4'>
         <CardTitle className='truncate py-0.5'>{data.title}</CardTitle>

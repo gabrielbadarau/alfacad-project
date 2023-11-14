@@ -7,8 +7,18 @@ import { columns } from './components/columns';
 
 export const revalidate = 0;
 
-const ProjectsPage = async () => {
-  const { projects } = await getProjects();
+interface ProjectPageProps {
+  searchParams: {
+    search: string;
+    status: string[];
+  };
+}
+
+const ProjectsPage: React.FC<ProjectPageProps> = async ({ searchParams }) => {
+  const { projects } = await getProjects({
+    filterName: searchParams.search,
+    filterStatus: searchParams.status,
+  });
 
   return (
     <div className='space-y-4 p-8 pt-6'>
