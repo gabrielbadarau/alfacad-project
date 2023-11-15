@@ -72,7 +72,7 @@ const DataTableRowActions: React.FC<DataTableRowActionsProps> = ({ row }) => {
         <DropdownMenuItem
           onClick={() => router.push(`/projects/${row.original.id}`)}
         >
-          Edit
+          Editează
           <DropdownMenuShortcut>
             <Pencil className='h-4 w-4 shrink-0' />
           </DropdownMenuShortcut>
@@ -94,7 +94,7 @@ const DataTableRowActions: React.FC<DataTableRowActionsProps> = ({ row }) => {
               onClick={() => setOpenDeleteModal(true)}
               className='text-red-600 hover:text-red-600'
             >
-              Delete
+              Șterge
               <DropdownMenuShortcut>
                 <Trash2 className='h-4 w-4 shrink-0' />
               </DropdownMenuShortcut>
