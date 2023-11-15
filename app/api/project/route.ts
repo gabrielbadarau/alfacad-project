@@ -44,6 +44,7 @@ export async function POST(req: Request) {
         name,
         type,
         status,
+        version: 1,
       },
     });
 

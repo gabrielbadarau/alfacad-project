@@ -25,6 +25,7 @@ export const getProject = async (projectId: string) => {
             type: project.type,
             status: project.status,
             updatedAt: format(project.updatedAt, 'dd/MM/yy HH:mm'),
+            version: project.version,
           },
           comments: project.comments,
         }

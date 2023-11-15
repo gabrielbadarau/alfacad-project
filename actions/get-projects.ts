@@ -76,6 +76,7 @@ export const getProjects = async (
       type: project.type,
       status: project.status,
       updatedAt: format(project.updatedAt, 'dd/MM/yy HH:mm'),
+      version: project.version,
     }));
 
     const countDocuments = await prismadb.project.count({

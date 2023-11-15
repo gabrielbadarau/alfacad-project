@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useParams, useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -31,6 +31,7 @@ import { findDifferentProperties } from '@/lib/utils';
 import { useUser } from '@clerk/nextjs';
 
 import { projectStatuses, projectTypes } from './utils';
+import ConflictToast from './conflict-toast';
 
 const formSchema = z.object({
   name: z.string().min(1, 'Acest câmp este obligatoriu.'),
@@ -67,12 +68,15 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ initialData }) => {
       setLoading(true);
 
       if (initialData) {
-        const changedProperties = findDifferentProperties(initialData, data);
-
-        await axios.patch(
-          `/api/project/${params.projectId}`,
-          changedProperties
+        const onlyChangedProperties = findDifferentProperties(
+          initialData,
+          data
         );
+
+        await axios.patch(`/api/project/${params.projectId}`, {
+          ...onlyChangedProperties,
+          version: initialData.version,
+        });
       } else {
         await axios.post(`/api/project`, data);
       }
@@ -82,7 +86,18 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ initialData }) => {
       router.refresh();
       toast.success(toastMessage);
     } catch (error) {
-      toast.error('Ceva nu a mers bine.');
+      if (error instanceof AxiosError && error.response?.status === 409) {
+        toast(
+          (t) => (
+            <ConflictToast toastDismissAction={() => toast.dismiss(t.id)} />
+          ),
+          {
+            duration: Infinity,
+          }
+        );
+      } else {
+        toast.error('Ceva nu a mers bine.');
+      }
     } finally {
       setLoading(false);
     }

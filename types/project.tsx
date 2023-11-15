@@ -6,6 +6,7 @@ export interface ProjectInfo {
   type: string;
   status: string;
   updatedAt: string;
+  version: number;
 }
 
 export interface Project {

@@ -140,7 +140,10 @@ export function DataTablePagination<TData>({
     <div className='flex items-center justify-end'>
       <div className='flex items-center space-x-6 lg:space-x-8'>
         <div className='flex items-center space-x-2'>
-          <p className='text-sm font-medium'>Rânduri per pagină</p>
+          <p className='text-sm font-medium hidden sm:block'>
+            Rânduri per pagină
+          </p>
+          <p className='text-sm font-medium block sm:hidden'>Rânduri</p>
           <Select
             value={`${pageSize}`}
             onValueChange={(value) => {

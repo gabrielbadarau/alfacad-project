@@ -42,11 +42,22 @@ export async function PATCH(
       return new NextResponse('ProjectId is required', { status: 400 });
     }
 
+    const checkVersionConflict = await prismadb.project.findFirst({
+      where: { id: params.projectId, version: body.version },
+    });
+
+    if (!checkVersionConflict) {
+      throw new Error('project-version-conflict');
+    }
+
     const project = await prismadb.project.update({
       where: {
         id: params.projectId,
       },
-      data: body,
+      data: {
+        ...body,
+        version: { increment: 1 },
+      },
     });
 
     const combinedComment = comments.reduce((prevValue, currValue) => {
@@ -65,6 +76,13 @@ export async function PATCH(
 
     return NextResponse.json(project);
   } catch (error) {
+    if (
+      error instanceof Error &&
+      error.message === 'project-version-conflict'
+    ) {
+      return new NextResponse('Version conflict', { status: 409 });
+    }
+
     console.log('[PROJECT_PATCH]', error);
     return new NextResponse('Internal error', { status: 500 });
   }
