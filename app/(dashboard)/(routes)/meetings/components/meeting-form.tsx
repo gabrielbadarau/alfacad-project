@@ -55,6 +55,8 @@ const formSchema = z.object({
   description: z.string().min(1, 'Acest câmp este obligatoriu.'),
 });
 
+// In this case, meeting returns users as a string[]
+// I already got all the users information in this case and can leverage that
 type MeetingWithArrayUsers = {
   [K in keyof Meeting]: K extends 'users' ? string[] : Meeting[K];
 };
