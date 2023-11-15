@@ -100,13 +100,6 @@ const ProjectComments: React.FC<ProjectCommentsProps> = ({
                 comment.createdAt,
                 'dd/MM/yy HH:mm'
               );
-              const userData = {
-                emailAddress: user.emailAddresses[0].emailAddress,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                id: user.id,
-                imageUrl: user.imageUrl,
-              };
 
               return (
                 <div key={comment.id} className={alignStyle}>
@@ -118,7 +111,8 @@ const ProjectComments: React.FC<ProjectCommentsProps> = ({
                         : 'flex-row'
                     )}
                   >
-                    <UserBullet user={userData} />
+                    {author && <UserBullet user={author} />}
+
                     <div
                       className={cn(
                         'flex flex-col',
