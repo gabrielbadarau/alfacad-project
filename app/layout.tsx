@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google';
 import { ClerkProvider } from '@clerk/nextjs';
 import { romanianClerk } from '@/lib/clerk-ro';
 import { ToasterProvider } from '@/components/providers/toast-provider';
+import { Analytics } from '@vercel/analytics/react';
 
 import './globals.css';
 
@@ -46,6 +47,7 @@ export default function RootLayout({
           <ToasterProvider />
 
           {children}
+          <Analytics />
         </body>
       </html>
     </ClerkProvider>
