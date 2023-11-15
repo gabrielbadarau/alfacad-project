@@ -9,6 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 const hoursArray = [
   '07',
@@ -78,11 +79,13 @@ const TimePicker: React.FC<TimePickerProps> = ({
           </SelectTrigger>
         </FormControl>
         <SelectContent>
-          {hoursArray.map((hour) => (
-            <SelectItem key={hour} value={hour}>
-              {hour}
-            </SelectItem>
-          ))}
+          <ScrollArea className='h-48'>
+            {hoursArray.map((hour) => (
+              <SelectItem key={hour} value={hour}>
+                {hour}
+              </SelectItem>
+            ))}
+          </ScrollArea>
         </SelectContent>
       </Select>
 
