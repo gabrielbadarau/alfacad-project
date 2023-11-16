@@ -17,6 +17,8 @@ const MeetingsPage: React.FC<MeetingsPageProps> = async ({ searchParams }) => {
     searchParams.search,
     searchParams.page
   );
+  console.log('meeting get');
+  console.log(meetings);
 
   return (
     <div className='space-y-4 p-8 pt-6'>

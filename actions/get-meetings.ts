@@ -13,7 +13,15 @@ export const getMeetings = async (
     const take = 6;
 
     const currentDate = new Date();
+    console.log('currentDate');
+    console.log(currentDate);
+
     currentDate.setHours(0, 0, 0, 0);
+    console.log('current date after setHours');
+    console.log(currentDate);
+
+    console.log('expriemtn, modify to iso string');
+    console.log(currentDate.toISOString());
 
     const user = await currentUser();
 
