@@ -13,18 +13,10 @@ export const getMeetings = async (
     const take = 6;
 
     const currentDate = new Date();
-    console.log('currentDate');
-    console.log(currentDate);
-
-    console.log('timezoneoffset');
-    console.log(currentDate.getTimezoneOffset());
-
     currentDate.setHours(0, 0, 0, 0);
-    console.log('current date after setHours');
-    console.log(currentDate);
-
-    console.log('expriemtn, modify to iso string');
-    console.log(currentDate.toISOString());
+    // I have to decrease time because of the conflict timezones between server and client, and because I don't send any data from client to server in order for him to know in what time zone the request was made so that it could give me actual start of the day
+    // timezone GMT +2, so this is temporary fix
+    const decreasedDate = new Date(currentDate.getTime() - 2 * 60 * 60 * 1000);
 
     const user = await currentUser();
 
@@ -48,7 +40,7 @@ export const getMeetings = async (
       dashboardMeetings = await prismadb.meeting.findMany({
         where: {
           date: {
-            gte: currentDate,
+            gte: decreasedDate,
           },
         },
         orderBy: {
