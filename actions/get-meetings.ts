@@ -16,6 +16,9 @@ export const getMeetings = async (
     console.log('currentDate');
     console.log(currentDate);
 
+    console.log('timezoneoffset');
+    console.log(currentDate.getTimezoneOffset());
+
     currentDate.setHours(0, 0, 0, 0);
     console.log('current date after setHours');
     console.log(currentDate);
