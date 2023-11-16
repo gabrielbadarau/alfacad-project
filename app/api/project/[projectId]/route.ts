@@ -4,7 +4,7 @@ import { auth } from '@clerk/nextjs';
 import { clerkClient } from '@clerk/nextjs';
 import prismadb from '@/lib/prismadb';
 import { ChangedProjectProperties } from '@/types/project';
-import { getFormattedPropertyValue } from '@/lib/utils';
+import { getFormattedPropertyValue, removeProperty } from '@/lib/utils';
 
 export async function PATCH(
   req: Request,
@@ -28,14 +28,6 @@ export async function PATCH(
       if (!body[property]) {
         return new NextResponse(`${property} is required`, { status: 400 });
       }
-
-      const comment = `${
-        ChangedProjectProperties[
-          property as keyof typeof ChangedProjectProperties
-        ]
-      } lucrării \u21E8 ${getFormattedPropertyValue(property, body[property])}`;
-
-      comments.push(comment);
     }
 
     if (!params.projectId) {
@@ -48,6 +40,18 @@ export async function PATCH(
 
     if (!checkVersionConflict) {
       throw new Error('project-version-conflict');
+    }
+
+    const updatedBody = removeProperty(body, 'version');
+
+    for (const property in updatedBody) {
+      const comment = `${
+        ChangedProjectProperties[
+          property as keyof typeof ChangedProjectProperties
+        ]
+      } lucrării \u21E8 ${getFormattedPropertyValue(property, body[property])}`;
+
+      comments.push(comment);
     }
 
     const project = await prismadb.project.update({

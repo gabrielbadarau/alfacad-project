@@ -25,6 +25,15 @@ export function findDifferentProperties<Type extends object>(
   return differentProperties;
 }
 
+export function removeProperty<Type extends object>(
+  obj: Type,
+  propertyToRemove: keyof Type
+): Type {
+  const newObj = { ...obj };
+  delete newObj[propertyToRemove];
+  return newObj;
+}
+
 export function getFormattedPropertyValue(key: string, value: string) {
   let formattedValue = '';
 

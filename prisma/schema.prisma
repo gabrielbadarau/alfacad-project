@@ -27,7 +27,7 @@ model Meeting {
   time        String
   users       String
   address     String
-  description String
+  description String   @db.Text
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -47,7 +47,7 @@ model ProjectComment {
   id        String   @id @default(uuid())
   projectId String
   userId    String
-  comment   String
+  comment   String   @db.Text
   createdAt DateTime @default(now())
 
   Project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
