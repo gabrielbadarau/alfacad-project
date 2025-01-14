@@ -1,3 +1,5 @@
+This is a [Next.js](https://nextjs.org/) project.
+
 ## Alfacad Project
 
 Personal app, build to be some sort of support tool for a company. It was meant to help the company organize meetings schedules, vacations and project distribution more effectively.
